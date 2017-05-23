@@ -97,7 +97,8 @@ class FileManager
         $currentFileUrl = $data['currentFileUrl'];
         $newFileUrl = $data['newFileUrl'];
         $newFileName = $data['newFileName'];
-        rename($currentFileUrl, $newFileUrl);
+
+        rename($currentFileUrl, $newFileName);
         return $this->DBManager->findOneSecure('UPDATE files SET file_name =:newFileName, file_url =:newFileUrl WHERE file_url =:currentFileUrl',
         [
             'newFileName' => $newFileName,
@@ -112,13 +113,4 @@ class FileManager
         $extensions = array('.jpg', '.jpeg', '.txt','.png','.pdf', '.mp3', '.mp4');
         return in_array($ext, $extensions);
     }
-    public function createFolder(){
-
-    }
-
-
-
-
-
-
 }

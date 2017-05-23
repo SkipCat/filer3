@@ -3,7 +3,7 @@ routes:
     login:          'Security:login'
     logout:         'Security:logout'
     register:       'Security:register'
-    profile:        'Security:profile'  
+    profile:        'Profile:profile'
 
 default_route: 'home'
 
@@ -11,4 +11,4 @@ db_config:
     name: 'filer3'
     host: 'localhost'
     user: 'root'
-    pass: ''
+    pass: 'root'
