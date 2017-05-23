@@ -37,7 +37,8 @@
                      </div>
                      <div>
                          <form method="post" action="?action=profile">
-                             <input class='none' type='text' name='fileToRename' value='{{ file.file_url }}'>
+                             <input class='none' type='text' name='nameFileToRename' value='{{ file.file_name }}'>
+                             <input class='none' type='text' name='urlFileToRename' value='{{ file.file_url }}'>
                              <input type='text' name='newFileName' placeHolder='Nouveau nom du fichier'>
                              <input type='submit' name='submitRenameFile'>
                          </form>

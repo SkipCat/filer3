@@ -37,9 +37,8 @@ class ProfileController extends BaseController
             if(isset($_POST['submitRenameFile'])){
                 $res = $fileManager->checkRenameFile($_POST);
                 if($res['isFormGood']){
-                    var_dump($_POST);
-                }else{
-                    var_dump($res['errors']);
+                    $fileManager->renameFile($res);
+                    header('Location:?action=profile');
                 }
             }
 

@@ -29,17 +29,13 @@ class FileManager
 
     public function getFileByUrl($file_url)
     {
-        $data = $this->DBManager->findOneSecure("SELECT * FROM files WHERE file_url = :file_url",
+        return $this->DBManager->findOneSecure("SELECT * FROM files WHERE file_url = :file_url",
             ['file_url' => $file_url]);
-        return $data;
     }
     public function getUserFiles(){
         $user_id = (int)$_SESSION['user_id'];
-        return $this->DBManager->findAllSecure("SELECT * FROM files WHERE user_id = :user_id",
+        return $this->DBManager->findAllSecure("SELECT * FROM files WHERE user_id = :user_id ORDER BY date DESC",
             ['user_id' => $user_id]);
-    }
-    public function getAllFiles(){
-        return $this->DBManager->findAllSecure("SELECT * FROM files WHERE user_id = :user_id");
     }
     public function fileCheckAdd($data){
         $isFormGood = true;
@@ -72,24 +68,49 @@ class FileManager
             ['file_url' => $file_url]);
     }
     public function checkRenameFile($data){
-        $isFormGood = true;
-        $errors = array();
-        $res = array();
+        $res['isFormGood'] = true;
         if (!isset($data['newFileName']) || empty($data['newFileName'])) {
-            $errors[] = 'Veuillez saisir le nouveau nom du fichier';
-            $isFormGood = false;
-        }
-        $res['isFormGood'] = $isFormGood;
-        $res['errors'] = $errors;
-        return $res;
+            $res['isFormGood'] = false;
+            $res['errors'] = 'Veuillez saisir le nouveau nom du fichier';
+            return $res;
+        }else{
+            $currentFileUrl = $data['urlFileToRename'];
+            $currentFileName = substr(strrchr($currentFileUrl,'/'),1);
+            $ext = $this->getFileExtension($currentFileName);
+            $newFileName = $data['newFileName'].$ext;
+            $newFileUrl = "uploads/".$_SESSION['user_username']."/".$newFileName ;
 
+            $fileExist = $this->getFileByUrl($newFileUrl);
+            if($fileExist){
+                $res['isFormGood'] = false;
+                $res['errors'] = 'Le fichier existe déjà';
+                return $res;
+            }else{
+                $res['currentFileUrl'] = $currentFileUrl;
+                $res['newFileUrl'] = $newFileUrl;
+                $res['newFileName'] = $newFileName;
+                return $res;
+            }
+        }
     }
     public function renameFile($data){
-        $username = $_SESSION['user_username'];
-
+        $currentFileUrl = $data['currentFileUrl'];
+        $newFileUrl = $data['newFileUrl'];
+        $newFileName = $data['newFileName'];
+        rename($currentFileUrl, $newFileUrl);
+        return $this->DBManager->findOneSecure('UPDATE files SET file_name =:newFileName, file_url =:newFileUrl WHERE file_url =:currentFileUrl',
+        [
+            'newFileName' => $newFileName,
+            'newFileUrl' => $newFileUrl,
+            'currentFileUrl' => $currentFileUrl,
+        ]);
     }
-    public function getFileExtension(){
-        return substr();
+    public function getFileExtension($file_name){
+        return strrchr($file_name, '.');
+    }
+    public function extensionAccept($ext){
+        $extensions = array('.jpg', '.jpeg', '.txt','.png','.pdf', '.mp3', '.mp4');
+        return in_array($ext, $extensions);
     }
 
 
