@@ -78,44 +78,57 @@ class FileManager {
     }
 
     public function checkRenameFile($data) {
-        $res['isFormGood'] = true;
-        if (!isset($data['newFileName']) || empty($data['newFileName'])) {
-            $res['isFormGood'] = false;
-            $res['errors'] = 'Veuillez saisir le nouveau nom du fichier';
-            return $res;
+        $result['isFormGood'] = true;
+
+        if (!isset($data['newname']) || empty($data['newname'])) { // empty field
+            $result['isFormGood'] = false;
+            $result['errors'] = 'Veuillez saisir le nouveau nom du fichier';
         }
         else {
-            $currentFileUrl = $data['urlFileToRename'];
-            $currentFileName = substr(strrchr($currentFileUrl,'/'),1);
-            $ext = $this->getFileExtension($currentFileName);
-            $newFileName = $data['newFileName'].$ext;
-            $newFileUrl = "uploads/".$_SESSION['user_username']."/".$newFileName ;
+            $file = $this->DBManager->findOneSecure("SELECT * FROM files WHERE filename = :filename", 
+                ['filename' => $data['filename']]);
 
-            $fileExist = $this->getFileByUrl($newFileUrl);
-            if($fileExist){
-                $res['isFormGood'] = false;
-                $res['errors'] = 'Le fichier existe déjà';
-                return $res;
-            }else{
-                $res['currentFileUrl'] = $currentFileUrl;
-                $res['newFileUrl'] = $newFileUrl;
-                $res['newFileName'] = $newFileName;
-                return $res;
+            // check if file belongs to a folder
+            if ($file['id_folder'] == NULL) {
+                $newpath = 'uploads/' . $_SESSION['user_name'] . '/' . $data['newname']; // path by default
+            }
+            else {
+                $folderManager = FolderManager::getInstance();
+                $folder = $folderManager->getFolderById($file['id_folder']);
+                $newpath = $folder['folderpath'] . '/' . $newname; // path of file within folder
+            }
+            $newpath = 'uploads/' . $_SESSION['user_name'] . '/' . $data['newname'];
+
+            // check if newname already exists
+            $fileExist = $this->getFileByUrl($newpath);
+            if ($fileExist) {
+                $result['isFormGood'] = false;
+                $result['errors'] = 'Le fichier existe déjà';
+            }
+            else {
+                $result['filepath'] = $file['filepath'];
+                $result['newname'] = $data['newname'];
+                $result['newpath'] = $newpath;
             }
         }
+        return $result;
     }
 
-    public function renameFile($data){
-        $currentFileUrl = $data['currentFileUrl'];
-        $newFileUrl = $data['newFileUrl'];
-        $newFileName = $data['newFileName'];
-        rename($currentFileUrl, $newFileUrl);
-        return $this->DBManager->findOneSecure('UPDATE files SET file_name =:newFileName, file_url =:newFileUrl WHERE file_url =:currentFileUrl',
-        [
-            'newFileName' => $newFileName,
-            'newFileUrl' => $newFileUrl,
-            'currentFileUrl' => $currentFileUrl,
-        ]);
+    public function renameFile($data) {
+        $currentPath = $data['filepath'];
+        $newpath = $data['newpath'];
+        $newname = $data['newname'];
+        rename($currentPath, $newpath);
+
+        $file = $this->DBManager->findOneSecure("UPDATE files
+            SET filename = :newname, filepath = :newpath
+            WHERE filepath = :currentPath", [
+                'newname' => $newname,
+                'newpath' => $newpath,
+                'currentPath' => $currentPath,
+            ]
+        );
+        return $file;
     }
 
     public function deleteFile($filepath) {

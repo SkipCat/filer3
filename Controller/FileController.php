@@ -33,15 +33,10 @@ class FileController extends BaseController {
         if (!empty($_SESSION['user_id'])) {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $fileManager = FileManager::getInstance();                
-                $data = $fileManager->fileCheckRename($_POST);
+                $data = $fileManager->checkRenameFile($_POST);
                 if ($data['isFormGood']) {
-                    $fileManager->renameFile($_POST);
+                    $fileManager->renameFile($data);
                     echo $this->redirect('home');
-                    /*
-                        $res['currentFileUrl'] = $currentFileUrl;
-                        $res['newFileUrl'] = $newFileUrl;
-                        $res['newFileName'] = $newFileName;
-                    */ 
                 }
                 else {
                     $errors = $data['errors'];

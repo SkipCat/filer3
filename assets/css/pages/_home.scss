@@ -1,0 +1,28 @@
+#home-page {
+
+}
+
+.actions {
+
+}
+
+.folder {
+
+}
+
+.file {
+    @include flex(column, center, space-between);
+    .preview {
+        width: 115px;
+    }
+}
+
+.actions {
+    img {
+        width: 20px;
+    }
+}
+
+.container-forms form {
+    display: none;
+}
