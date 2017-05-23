@@ -1,0 +1,23 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <header>
+
+    </header>
+
+    {% if errors is not empty %}
+        {% for error in errors %}
+            {{ error | raw }} <br>
+        {% endfor %}
+    {% endif %}
+    <main class="allForm">
+        <form method="POST" action="?action=register">
+            <input id="username" type="text" name="username" placeholder="Pseudo*">
+            <input id="password" type="password" name="password" placeholder="Mot de Passe*">
+            <input id="verifpassword" type="password" name="verifpassword" placeholder="Confirmation Mot de Passe*">
+            <input id="firstname" type="text" name="firstname" placeholder="Prénom*">
+            <input id="lastname" type="text" name="lastname" placeholder="Nom*">
+            <button type="submit" name="submitRegister" id="button">Créer mon compte</button>
+        </form>
+    </main>
+{% endblock %}
