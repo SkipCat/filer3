@@ -8,11 +8,43 @@
         <p>Profile ...</p>
         <p>Hi <b>{{ user.username }}</b>, Vous êtes inscrit depuis le <i>{{ user.date | date("d/M/Y") }}</i></p>
          <div>
+             {% if errors is not empty %}
+                 {% for error in errors %}
+                    {{ error.file }} <br>
+                 {% endfor %}
+             {% endif %}
              <p>Ajouter un fichier</p>
              <form action="?action=profile" enctype="multipart/form-data" method="post">
                 <input type="file" name="addFile">
                 <input type="submit" name="submitAddFile" value="Ajouter">
              </form>
+         </div>
+         <div>
+             {% if myFiles is not empty %}
+                 {% for file in myFiles %}
+                     Nom du fichier : {{ file.file_name }} <br>
+                     Url du fichier : {{ file.file_url }} <br>
+                     Date d'ajout : {{ file.date }} <br>
+                     <a href="{{ file.file_url }}" download><img src="assets/img/download.png" alt="iconDownload"></a>
+                     <div>
+                         <label for="{{ file.file_url }}">
+                            <img src="assets/img/delete.png" alt="iconDelete">
+                         </label>
+                         <form method="post" action="?action=profile" class="none">
+                             <input  type='text' name='fileToDelete' value="{{ file.file_url }}">
+                             <input  type='submit' name='submitDeleteFile' id='{{ file.file_url }}' value="Supprimer">
+                         </form>
+                     </div>
+                     <div>
+                         <form method="post" action="?action=profile">
+                             <input class='none' type='text' name='fileToRename' value='{{ file.file_url }}'>
+                             <input type='text' name='newFileName' placeHolder='Nouveau nom du fichier'>
+                             <input type='submit' name='submitRenameFile'>
+                         </form>
+                     </div>
+                     <br>
+                 {% endfor %}
+             {% endif %}
          </div>
     </main>
 

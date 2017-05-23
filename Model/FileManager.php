@@ -33,6 +33,14 @@ class FileManager
             ['file_url' => $file_url]);
         return $data;
     }
+    public function getUserFiles(){
+        $user_id = (int)$_SESSION['user_id'];
+        return $this->DBManager->findAllSecure("SELECT * FROM files WHERE user_id = :user_id",
+            ['user_id' => $user_id]);
+    }
+    public function getAllFiles(){
+        return $this->DBManager->findAllSecure("SELECT * FROM files WHERE user_id = :user_id");
+    }
     public function fileCheckAdd($data){
         $isFormGood = true;
         $errors = array();
@@ -54,9 +62,36 @@ class FileManager
         $file['file_name'] = $data['file_name'];
         $file['file_url'] = 'uploads/'.$_SESSION['user_username'].'/'.$data['file_name'];
         $file['user_id'] = (int)$_SESSION['user_id'];
-        $data['date'] = $this->DBManager->getDatetimeNow();
+        $file['date'] = $this->DBManager->getDatetimeNow();
         $this->DBManager->insert('files', $file);
+        move_uploaded_file($data['file_tmp_name'],$file['file_url']);
     }
+    public function deleteFile($file_url){
+        unlink($file_url);
+        return $this->DBManager->findOneSecure("DELETE FROM files WHERE file_url = :file_url",
+            ['file_url' => $file_url]);
+    }
+    public function checkRenameFile($data){
+        $isFormGood = true;
+        $errors = array();
+        $res = array();
+        if (!isset($data['newFileName']) || empty($data['newFileName'])) {
+            $errors[] = 'Veuillez saisir le nouveau nom du fichier';
+            $isFormGood = false;
+        }
+        $res['isFormGood'] = $isFormGood;
+        $res['errors'] = $errors;
+        return $res;
+
+    }
+    public function renameFile($data){
+        $username = $_SESSION['user_username'];
+
+    }
+    public function getFileExtension(){
+        return substr();
+    }
+
 
 
 

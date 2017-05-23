@@ -1,0 +1,16 @@
+routes:
+    home: 'Default:home'
+    logout: 'Security:logout'
+    register: 'Security:register'
+    login: 'Security:login'
+    profile: 'Profile:profile'
+    offers: 'Default:offers'
+    about: 'Default:about'
+
+defaut_route: 'home'
+
+db_config:
+    name: 'filer3'
+    host: 'localhost'
+    user: 'root'
+    pass: 'root'
