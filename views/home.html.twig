@@ -1,13 +1,19 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
-    <header>
-
-    </header>
-
-    <main class="profile_page">
-        <p>Home page</p>
-    </main>
-
-
+    <section class="profile_page">
+        <h3>Dossiers</h3>
+        <ul>
+            {% for folder in folders %}
+                <li>{{ folder.foldername }}</li>
+            {% endfor %}
+        </ul>
+        <hr>
+        <h3>Fichiers</h3>
+        <ul>
+            {% for file in files %}
+                <li>{{ file.filename }}</li>
+            {% endfor %}
+        </ul>
+    </section>
 {% endblock %}

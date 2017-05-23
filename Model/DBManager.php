@@ -8,23 +8,19 @@ use PDOException;
 class DBManager
 {
     private $dbh;
-
     private static $instance = null;
 
-    public static function getInstance()
-    {
+    public static function getInstance() {
         if (self::$instance === null)
             self::$instance = new DBManager();
         return self::$instance;
     }
 
-    private function __construct()
-    {
+    private function __construct() {
         $this->dbh = null;
     }
 
-    private function connectToDb()
-    {
+    private function connectToDb() {
         global $config;
         $db_config = $config['db_config'];
         $dsn = 'mysql:dbname=' . $db_config['name'] . ';host=' . $db_config['host'];
@@ -40,15 +36,13 @@ class DBManager
         return $dbh;
     }
 
-    protected function getDbh()
-    {
+    protected function getDbh() {
         if ($this->dbh === null)
             $this->dbh = $this->connectToDb();
         return $this->dbh;
     }
 
-    public function insert($table, $data = [])
-    {
+    public function insert($table, $data = []) {
         $dbh = $this->getDbh();
         $query = 'INSERT INTO `' . $table . '` VALUES (NULL,';
         $first = true;
@@ -65,16 +59,14 @@ class DBManager
         return true;
     }
 
-    function findOne($query)
-    {
+    function findOne($query) {
         $dbh = $this->getDbh();
         $data = $dbh->query($query, PDO::FETCH_ASSOC);
         $result = $data->fetch();
         return $result;
     }
 
-    function findOneSecure($query, $data = [])
-    {
+    function findOneSecure($query, $data = []) {
         $dbh = $this->getDbh();
         $sth = $dbh->prepare($query);
         $sth->execute($data);
@@ -82,29 +74,27 @@ class DBManager
         return $result;
     }
 
-    function findAll($query)
-    {
+    function findAll($query) {
         $dbh = $this->getDbh();
         $data = $dbh->query($query, PDO::FETCH_ASSOC);
         $result = $data->fetchAll(r);
         return $result;
     }
 
-    function findAllSecure($query, $data = [])
-    {
+    function findAllSecure($query, $data = []) {
         $dbh = $this->getDbh();
         $sth = $dbh->prepare($query);
         $sth->execute($data);
         $result = $sth->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+
     public function getDatetimeNow() {
         date_default_timezone_set('Europe/Paris');
         return date("Y-m-d H:i:s");
     }
 
-    public function watch_action_log($file, $text)
-    {
+    public function watch_action_log($file, $text) {
         $file_log = fopen('logs/' . $file, 'a');
         fwrite($file_log, $text);
         fclose($file_log);

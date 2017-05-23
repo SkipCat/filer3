@@ -4,6 +4,6 @@
         "symfony/yaml": "^3.2"
     },
     "autoload": {
-        
+        "psr-4": {"": "."}
     }
 }

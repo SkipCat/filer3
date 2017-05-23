@@ -1,0 +1,49 @@
+@import 'partials/font';
+@import 'partials/mixin';
+@import 'partials/var';
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    min-width: 100vw;
+    display: flex;
+    flex-direction: column;
+
+    a {
+        text-decoration: none;
+    }
+}
+
+main {
+    flex-grow: 1;
+    background-color: hsla(0,0%,100%,.8);
+    display: flex;
+}
+
+aside {
+    background-color: lightgrey;
+    @include flex(column, center, space-around);
+    width: 225px;
+}
+
+section {
+
+}
+
+header {
+    background-color: rgba(40,43,48,.75);
+    @include flex(row, center, space-around);
+    
+    a {
+        color: white;
+    }
+    h3 {
+        color: crimson;
+    }
+}
+
+footer {
+    background-color: rgba(40,43,48,.75);
+    @include flex(row, center, center);
+    color: crimson;
+}

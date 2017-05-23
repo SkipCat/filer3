@@ -1,9 +1,10 @@
 routes:
     home:           'Default:home'
+    uploadFile:     'File:uploadFile'
     login:          'Security:login'
     logout:         'Security:logout'
     register:       'Security:register'
-    profile:        'Security:profile'  
+    profile:        'Profile:profile'  
 
 default_route: 'home'
 

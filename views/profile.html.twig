@@ -1,10 +1,7 @@
 {% extends 'layout.html.twig' %}
+
 {% block content %}
-    <header>
-
-    </header>
-
-    <main class="user_page">
+    <section>
         <p>Profile ...</p>
         <p>Hi <b>{{ user.username }}</b>, Vous êtes inscrit depuis le <i>{{ user.date | date("d/M/Y") }}</i></p>
          <div>
@@ -13,11 +10,6 @@
                     {{ error.file }} <br>
                  {% endfor %}
              {% endif %}
-             <p>Ajouter un fichier</p>
-             <form action="?action=profile" enctype="multipart/form-data" method="post">
-                <input type="file" name="addFile">
-                <input type="submit" name="submitAddFile" value="Ajouter">
-             </form>
          </div>
          <div>
              {% if myFiles is not empty %}
@@ -47,7 +39,6 @@
                  {% endfor %}
              {% endif %}
          </div>
-    </main>
-
+    </section>
 {% endblock %}
 

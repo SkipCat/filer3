@@ -1,18 +1,14 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
-    <header>
-
-    </header>
-
     {% if errors is defined %}
-        {{ errors }} <br>
+        {{ errors }}
     {% endif %}
-    <main class="allForm">
+    <section>
         <form method="POST" action="?action=login">
             <input id="username" type="text" name="username" placeholder="Pseudo*">
             <input id="password" type="password" name="password" placeholder="Mot de Passe*">
             <button type="submit" name="submitLogin" id="button">Se connecter</button>
         </form>
-    </main>
+    </section>
 {% endblock %}
