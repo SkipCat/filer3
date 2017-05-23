@@ -1,21 +1,21 @@
 {
-  "name": "project_transversal",
+  "name": "filer3",
   "version": "1.0.0",
-  "description": "",
+  "description": "install :",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/VoleurRapide/project_transversal.git"
+    "url": "git+https://github.com/SkipCat/filer3.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/VoleurRapide/project_transversal/issues"
+    "url": "https://github.com/SkipCat/filer3/issues"
   },
-  "homepage": "https://github.com/VoleurRapide/project_transversal#readme",
+  "homepage": "https://github.com/SkipCat/filer3#readme",
   "devDependencies": {
     "grunt": "^1.0.1",
     "grunt-contrib-sass": "^1.0.0",

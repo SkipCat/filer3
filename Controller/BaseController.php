@@ -6,24 +6,20 @@ class BaseController
 {
     private $twig;
 
-    public function __construct(\Twig_Environment $twig)
-    {
+    public function __construct(\Twig_Environment $twig) {
         $this->twig = $twig;
     }
 
-    protected function getTwig()
-    {
+    protected function getTwig() {
         return $this->twig;
     }
 
-    protected function renderView($view, $data = [])
-    {
+    protected function renderView($view, $data = []) {
         $template = $this->getTwig()->load($view);
         return $template->render($data);
     }
 
-    protected function redirect($route)
-    {
+    protected function redirect($route) {
         header('Location: ?action=' . $route);
         exit(0);
     }

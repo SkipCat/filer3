@@ -6,8 +6,28 @@
         <meta name="viewport" content="width=device-width, user-scalable=no">
     </head>
     <body>
+        <header>
+            {% if user is defined and not empty %}
+                <a href="?action=profile">{{ user.username }}</a>
+            {% else %}
+                <a href="?action=login">Connexion</a>
+            {% endif %}
+            <a href="action=home">
+                <h3>Filer 3</h3>
+            </a>
+            {% if user is defined and not empty %}
+                <a href="?action=logout">Déconnexion</a>
+            {% else %}
+                <a href="?action=register">Inscription</a>
+            {% endif %}
+        </header>
+
+        <aside>
+        </aside>
+
         {% block content %}
         {% endblock %}
+
         <footer>
             <div class="copy">&copy;Filer V3 - 2017</div>
         </footer>
