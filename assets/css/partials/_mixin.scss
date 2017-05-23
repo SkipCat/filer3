@@ -1,0 +1,38 @@
+@mixin flex($direction, $align, $justify) {
+    display: flex;
+    flex-direction: $direction;
+    align-items: $align;
+    justify-content: $justify;
+}
+
+@mixin policy($font, $color, $size) {
+    font-family: $font;
+    color: $color;
+    font-size: $size;
+}
+
+@mixin resize($width, $height) {
+    width: $width;
+    height: $height;
+}
+
+@mixin background($size, $origin, $clip, $pos) {
+    background-size: $size; // x y
+    background-origin: $origin;
+    background-clip: $clip;
+    background-position: $pos;
+}
+
+@mixin input($size, $color, $border-color, $radius) {
+    color: $color;
+    border: $size solid $border-color;
+    border-radius: $radius;
+}
+
+@mixin position($pos, $top, $right, $bottom, $left) {
+    position: $pos;
+    top: $top;
+    right: $right;
+    bottom: $bottom;
+    left: $left;
+}

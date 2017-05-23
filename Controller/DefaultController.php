@@ -7,6 +7,7 @@ use Model\FileManager;
 use Model\FolderManager;
 
 class DefaultController extends BaseController {
+
     public function homeAction() {
         if (!empty($_SESSION['user_id'])) {
             $userManager = UserManager::getInstance();
@@ -15,7 +16,7 @@ class DefaultController extends BaseController {
 
             $user = $userManager->getUserById($_SESSION['user_id']);
             $files = $fileManager->getUserFiles();
-            $folders = $folderManager->getUserFolders();
+            $folders = $folderManager->getUserFolders($_SESSION['user_id']);
 
             echo $this->renderView('home.html.twig', [
                 'user'    => $user,
@@ -27,4 +28,16 @@ class DefaultController extends BaseController {
             echo $this->redirect('login');
         }
     }
+
+    public function profileAction() {
+        if (!empty($_SESSION['user_id'])) {
+            $userManager = UserManager::getInstance();
+            $user = $userManager->getUserById($_SESSION['id']);
+            echo $this->renderView('profile.html.twig', ['user' => $user]);
+        }
+        else {
+            echo $this->redirect('login');
+        }
+    }
+
 }

@@ -1,5 +1,7 @@
 routes:
     home:           'Default:home'
+    uploadFile:     'File:uploadFile'
+    renameFile:     'File:renameFile'
     login:          'Security:login'
     logout:         'Security:logout'
     register:       'Security:register'
