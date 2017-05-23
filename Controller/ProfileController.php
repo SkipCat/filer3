@@ -8,9 +8,6 @@
 
 namespace Controller;
 use Model\FileManager;
-use Spipu\Html2Pdf\Html2Pdf;
-use Spipu\Html2Pdf\Exception\Html2PdfException;
-use Spipu\Html2Pdf\Exception\ExceptionFormatter;
 use Model\UserManager;
 
 

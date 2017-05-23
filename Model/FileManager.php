@@ -112,6 +112,9 @@ class FileManager
         $extensions = array('.jpg', '.jpeg', '.txt','.png','.pdf', '.mp3', '.mp4');
         return in_array($ext, $extensions);
     }
+    public function createFolder(){
+
+    }
 
 
 
