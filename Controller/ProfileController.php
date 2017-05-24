@@ -13,7 +13,7 @@ use Model\UserManager;
 
 class ProfileController extends BaseController
 {
-    /*public function profileAction()
+    public function profileAction()
     {
 
         if (!empty($_SESSION['user_id'])) {
@@ -38,6 +38,7 @@ class ProfileController extends BaseController
                     header('Location:?action=profile');
                 }
             }
+
             if(isset($_POST['submitDeleteFile'])){
                 $fileManager->deleteFile($_POST['fileToDelete']);
                 header('Location:?action=profile');
@@ -54,7 +55,7 @@ class ProfileController extends BaseController
         }
 
 
-    }*/
+    }
 
 
 

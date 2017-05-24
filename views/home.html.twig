@@ -3,29 +3,38 @@
 {% block content %}
     <section id="">
         <h3>Dossiers</h3>
-        {% for folder in folders %}
-            <div class="folder">
-                {{ folder.foldername }}
-                <div class="actions folder-actions">
-                    <a href="?action=renameFolder">
-                        <img src="assets/img/icon_rename.png" class="icon-rename" alt="icon-to-rename">
-                    </a>
-                    <a href="?action=moveFolder">
-                        <img src="assets/img/icon_folder.png" class="icon-move" alt="icon-to-move">
-                    </a>
-                    <!--
+            {% for folder in folders %}
+                <div class="folder">
+                    {{ folder.foldername }}
+                    <div class="actions folder-actions">
+                        <a href="?action=renameFolder"> 
+                            <img src="assets/img/icon_rename.png" class="icon-rename" alt="icon-to-rename">
+                        </a>
+                        <a href="?action=moveFolder">
+                            <img src="assets/img/icon_folder.png" class="icon-move" alt="icon-to-move">
+                        </a>
+                        <!--
                         <a href="{{ file.filepath }}" download="{{ file.filename }}">
                             <img src="assets/img/icon_download.png" alt="icon-to-download">
                         </a>
                         -->
-                    <a href="?action=deleteFolder">
-                        <img src="assets/img/icon_delete.png" class="icon-delete" alt="icon-to-delete">
-                    </a>
+                        <a href="?action=deleteFolder">
+                            <img src="assets/img/icon_delete.png" class="icon-delete" alt="icon-to-delete">
+                        </a>
+                    </div>
+                    <div class="container-forms">
+                        <form method="POST" action="?action=renameFolder" id="form-rename-folder">
+                            <input type="hidden" name="foldername" value="{{ folder.foldername }}">
+                            <input type="text" name="newname" placeholder="Nouveau nom">
+                            <input type="submit" value="Renommer">
+                        </form>
+                    </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </ul>
         <hr>
         <h3>Fichiers</h3>
+<<<<<<< HEAD
         {% if errors is defined and errors is not empty %}
             {{ errors }}
         {% endif %}
@@ -129,9 +138,91 @@
                             </div>
                         </div>
                     {% endif %}
+=======
+            {% for file in files %}
+                <!-- check if file belongs to a folder -->
+                <div class="file">
+                    {% if file.extension == 'image/jpeg' or file.extension == 'image/png' or file.extension == 'image/gif' %}
+                        <img src="{{ file.filepath }}" class="preview" alt="preview-img">
+                    {% elseif file.extension == 'text/plain' %}
+                        <img src="assets/img/txt-icon.png" class="preview" alt="preview-text">
+                    {% elseif file.extension == 'application/pdf' %}
+                        <img src="assets/img/pdf-icon.png" class="preview" alt="preview-pdf">
+                    {% elseif file.extension == 'audio/mpeg' %}
+                        <audio src="{{ file. filpath }}" class="preview" controls>
+                            <source type="audio/mpeg" alt="preview-mp3">
+                        </audio>
+                    {% elseif file.extension == 'video/3gpp' or file.extension == 'video/mp4' %}
+                        <video width="220" height="140" class="preview" controls>
+                            <source src="{{ file.filepath }}" type="video/mp4">
+                        </video>
+                    {% elseif file.extension == 'application/zip' or file.extension == 'application/x-rar-compressed' %}
+                        <img src="assets/img/icon-archive.png" class="preview" alt="preview-pdf">
+                    {% endif %}
+                    {{ file.filename }}
+                    {% if file.extension == 'text/plain' %}
+                        <a href="?action=editFile">
+                            <img src="assets/img/icon_modify.png" class="icon-modify" alt="icon-to-modify">
+                        </a>
+                    {% endif %}
+                    <div class="actions file-actions">
+                        <a href="?action=renameFile"> 
+                            <img src="assets/img/icon_rename.png" class="icon-rename" alt="icon-to-rename">
+                        </a>
+                        <a href="?action=replaceFile">
+                            <img src="assets/img/icon_replace.png" class="icon-replace" alt="icon-to-replace">
+                        </a>
+                        <a href="?action=moveFile">
+                            <img src="assets/img/icon_folder.png" class="icon-move" alt="icon-to-move">
+                        </a>
+                        <a href="{{ file.filepath }}" download="{{ file.filename }}">
+                            <img src="assets/img/icon_download.png" alt="icon-to-download">
+                        </a>
+                        <form method="POST" action="?action=deleteFile">
+                            <input type="hidden" name="filepath" value="{{ file.filepath }}">
+                            <input type="image" src="assets/img/icon_delete.png" class="icon-delete" alt="icon-to-delete">
+                        </a>
+                    </div>
+                    <div class="container-forms">
+                        <form></form>
+                        <form method="POST" action="?action=renameFile">
+                            <input type="hidden" name="file_id" value="{{ file.id }}">
+                            <input type="text" name="newname" placeholder="Nouveau nom">
+                            <input type="submit" value="Renommer">
+                        </form>
+                        <form method="POST" action="?action=replaceFile" enctype="multipart/form-data">
+                            <input type="hidden" name="MAX_FILE_SIZE" value="100000000">
+                            <input type="hidden" name="file_id" value="{{ file.id }}">
+                            <input type="file" name="userfile">
+                            <input type="submit" value="Remplacer">
+                        </form>
+                        <form method="POST" action="?action=moveFile">
+                            <input type="hidden" name="filepath" value="{{ file.filepath }}">
+                            <select name="folderpath">
+                                    <option value="NULL">Sélectionnez un dossier</option>
+                                {% for folder in folders %}
+                                    <!--<input type="hidden" name="folderpath" value="{{ folder.folderpath }}">
+                                    <input type="hidden" name="folder_id" value="{{ folder.id }}">-->
+                                    <option value="{{ folder.folderpath }}">{{ folder.foldername }}</option>
+                                {% endfor %}
+                            </select>
+                            <input type="submit" value="Déplacer">
+                        </form>
+                        <div class="container-modify-field container-hidden">
+                            <form method="POST" action="?action=modify" id="form-modify">
+                                <input type="hidden" name="input-filename" value="{{ file.filename }}" class="input-hidden">
+                                <input type="hidden" name="input-filepath" value="{{ file.filepath }}" class="input-hidden">
+                                <textarea name="content-modification" placeholder="Ajouter du texte">
+                                    <!--file_get_contents($i['filepath'])-->
+                                </textarea>
+                                <input type="submit" value="Modifier">
+                            </form>
+				        </div>
+                    </div>
+>>>>>>> 942b66da8e20591805e198bb8718a4653dac5dd7
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </ul>
     </section>
 
     <script src="assets/script/script.js"></script>
