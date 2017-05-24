@@ -2,11 +2,15 @@ routes:
     home:           'Default:home'
     uploadFile:     'File:uploadFile'
     renameFile:     'File:renameFile'
+    replaceFile:    'File:replaceFile'
     deleteFile:     'File:deleteFile'
+    moveFile:       'File:moveFile'
+    createFolder:   'Folder:createFolder'
+    renameFolder:   'Folder:renameFolder'
     login:          'Security:login'
     logout:         'Security:logout'
     register:       'Security:register'
-    profile:        'Profile:profile'
+    profile:        'Profile:profile'  
 
 default_route: 'home'
 
@@ -14,4 +18,4 @@ db_config:
     name: 'filer3'
     host: 'localhost'
     user: 'root'
-    pass: 'root'
+    pass: ''

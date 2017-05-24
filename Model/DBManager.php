@@ -59,14 +59,14 @@ class DBManager
         return true;
     }
 
-    function findOne($query) {
+    public function findOne($query) {
         $dbh = $this->getDbh();
         $data = $dbh->query($query, PDO::FETCH_ASSOC);
         $result = $data->fetch();
         return $result;
     }
 
-    function findOneSecure($query, $data = []) {
+    public function findOneSecure($query, $data = []) {
         $dbh = $this->getDbh();
         $sth = $dbh->prepare($query);
         $sth->execute($data);
@@ -74,14 +74,14 @@ class DBManager
         return $result;
     }
 
-    function findAll($query) {
+    public function findAll($query) {
         $dbh = $this->getDbh();
         $data = $dbh->query($query, PDO::FETCH_ASSOC);
         $result = $data->fetchAll(r);
         return $result;
     }
 
-    function findAllSecure($query, $data = []) {
+    public function findAllSecure($query, $data = []) {
         $dbh = $this->getDbh();
         $sth = $dbh->prepare($query);
         $sth->execute($data);

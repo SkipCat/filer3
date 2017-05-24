@@ -3,8 +3,6 @@
 namespace Controller;
 
 use Model\FileManager;
-use Model\FolderManager;
-use Model\UserManager;
 
 class FileController extends BaseController {
 
@@ -14,7 +12,7 @@ class FileController extends BaseController {
                 $fileManager = FileManager::getInstance();                
                 $data = $fileManager->fileCheckAdd($_POST);
                 if ($data['isFormGood']) {
-                    $fileManager->uploadFile($_FILES, $_POST);
+                    $fileManager->uploadFile($_FILES);
                     echo $this->redirect('home');
                 }
                 else {
@@ -39,22 +37,10 @@ class FileController extends BaseController {
                 if ($data['isFormGood']) {
                     $fileManager->renameFile($data);
                     echo $this->redirect('home');
-                }else{
+                }
+                else {
                     $errors = $data['errors'];
-                    //echo $this->renderView('home.html.twig', ['errors' => $errors]);
-                    $folderManager = FolderManager::getInstance();
-                    $userManager = UserManager::getInstance();
-
-                    $user = $userManager->getUserById($_SESSION['user_id']);
-                    $files = $fileManager->getUserFiles();
-                    $folders = $folderManager->getUserFolders($_SESSION['user_id']);
-
-                    echo $this->renderView('home.html.twig', [
-                        'user'    => $user,
-                        'files'   => $files,
-                        'folders' => $folders,
-                        'errors'  => $errors,
-                    ]);
+                    echo $this->renderView('home.html.twig', ['errors' => $errors]);
                 }
             }
             else {
@@ -65,11 +51,24 @@ class FileController extends BaseController {
             echo $this->redirect('login');
         }
     }
-    public function deleteFileAction() {
+
+    public function replaceFileAction() {
         if (!empty($_SESSION['user_id'])) {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $fileManager = FileManager::getInstance();
-                $fileManager->deleteFile($_POST['input-filepath']);
+                $fileManager = FileManager::getInstance();                
+                $data = $fileManager->fileCheckAdd($_POST);
+                // also check if new file doesn't already exist
+                if ($data['isFormGood']) {
+                    $fileManager->replaceFile($_POST, $_FILES);
+                    echo 'replace';
+                    echo $this->redirect('home');
+                }
+                else {
+                    $errors = $data['errors'];
+                    echo $this->renderView('home.html.twig', ['errors' => $errors]);
+                }
+            }
+            else {
                 echo $this->redirect('home');
             }
         }
@@ -78,4 +77,39 @@ class FileController extends BaseController {
         }
     }
 
+    public function deleteFileAction() {
+        if (!empty($_SESSION['user_id'])) {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $fileManager = FileManager::getInstance();
+                $fileManager->deleteFile($_POST);
+                echo $this->redirect('home');
+            }
+        }
+        else {
+            echo $this->redirect('login');
+        }
+    }
+
+    public function moveFileAction() {
+        if (!empty($_SESSION['user_id'])) {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $fileManager = FileManager::getInstance();                
+                $data = $fileManager->fileCheckMove($_POST);
+                if ($data['isFormGood']) {
+                    $fileManager->moveFile($data);
+                    //echo $this->redirect('home');
+                }
+                else {
+                    $errors = $data['errors'];
+                    echo $this->renderView('home.html.twig', ['errors' => $errors]);
+                }
+            }
+            else {
+                echo $this->redirect('home');
+            }
+        }
+        else {
+            echo $this->redirect('login');
+        }
+    }
 }
