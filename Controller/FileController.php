@@ -3,6 +3,8 @@
 namespace Controller;
 
 use Model\FileManager;
+use Model\FolderManager;
+use Model\UserManager;
 
 class FileController extends BaseController {
 
@@ -17,7 +19,7 @@ class FileController extends BaseController {
                 }
                 else {
                     $errors = $data['errors'];
-                    echo $this->renderView('home.html.twig', ['errors' => $errors]);
+                    echo $this->renderView('home.html.twig', ['errors' => $errors[0]]);
                 }
             }
             else {
@@ -37,10 +39,22 @@ class FileController extends BaseController {
                 if ($data['isFormGood']) {
                     $fileManager->renameFile($data);
                     echo $this->redirect('home');
-                }
-                else {
+                }else{
                     $errors = $data['errors'];
-                    echo $this->renderView('home.html.twig', ['errors' => $errors]);
+                    //echo $this->renderView('home.html.twig', ['errors' => $errors]);
+                    $folderManager = FolderManager::getInstance();
+                    $userManager = UserManager::getInstance();
+
+                    $user = $userManager->getUserById($_SESSION['user_id']);
+                    $files = $fileManager->getUserFiles();
+                    $folders = $folderManager->getUserFolders($_SESSION['user_id']);
+
+                    echo $this->renderView('home.html.twig', [
+                        'user'    => $user,
+                        'files'   => $files,
+                        'folders' => $folders,
+                        'errors'  => $errors,
+                    ]);
                 }
             }
             else {
@@ -51,4 +65,17 @@ class FileController extends BaseController {
             echo $this->redirect('login');
         }
     }
+    public function deleteFileAction() {
+        if (!empty($_SESSION['user_id'])) {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $fileManager = FileManager::getInstance();
+                $fileManager->deleteFile($_POST['input-filepath']);
+                echo $this->redirect('home');
+            }
+        }
+        else {
+            echo $this->redirect('login');
+        }
+    }
+
 }

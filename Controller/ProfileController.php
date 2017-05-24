@@ -13,7 +13,7 @@ use Model\UserManager;
 
 class ProfileController extends BaseController
 {
-    public function profileAction()
+    /*public function profileAction()
     {
 
         if (!empty($_SESSION['user_id'])) {
@@ -54,7 +54,7 @@ class ProfileController extends BaseController
         }
 
 
-    }
+    }*/
 
 
 

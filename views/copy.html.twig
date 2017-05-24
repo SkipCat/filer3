@@ -26,9 +26,6 @@
         {% endfor %}
         <hr>
         <h3>Fichiers</h3>
-        {% if errors is defined and errors is not empty %}
-            {{ errors }}
-        {% endif %}
         {% for file in files %}
             <!-- check if file belongs to a folder -->
             <div class="file">
@@ -39,7 +36,7 @@
                 {% elseif file.extension == 'application/pdf' %}
                     <img src="assets/img/pdf-icon.png" class="preview" alt="preview-pdf">
                 {% elseif file.extension == 'audio/mpeg' %}
-                    <audio src="{{ file.filepath }}" class="preview" controls>
+                    <audio src="{{ file. filpath }}" class="preview" controls>
                         <source type="audio/mpeg" alt="preview-mp3">
                     </audio>
                 {% elseif file.extension == 'video/3gpp' or file.extension == 'video/mp4' %}
@@ -69,9 +66,7 @@
                         <img src="assets/img/icon_download.png" alt="icon-to-download">
                     </a>
                     <a href="?action=deleteFile">
-                        <label for="{{ file.filepath }}">
-                            <img src="assets/img/icon_delete.png" class="icon-delete" alt="icon-to-delete">
-                        </label>
+                        <img src="assets/img/icon_delete.png" class="icon-delete" alt="icon-to-delete">
                     </a>
                 </div>
                 <div class="container-forms">
@@ -97,11 +92,11 @@
                         </select>
                         <input type="submit" value="Déplacer">
                     </form>
-                    <form method="POST" action="?action=deleteFile">
+                    <form method="POST" action="?action=delete">
                         <input type="hidden" name="input-filename" value="{{ file.filename }}">
                         <input type="hidden" name="input-filepath" value="{{ file.filepath }}">
                         <p>Supprimer ?</p>
-                        <input type="submit" id="{{ file.filepath }}" value="Oui">
+                        <input type="submit" value="Oui">
                         <!-- non -->
                     </form>
                     <div class="container-modify-field container-hidden">

@@ -47,7 +47,7 @@ class FileManager {
             $result['data'] = $data;
         }
         else {
-            $errors['file'] = 'Veuillez choisir une image';
+            $errors[] = 'Veuillez choisir une image';
             $isFormGood = false;
         }
 
@@ -113,21 +113,6 @@ class FileManager {
         }
         return $result;
     }
-<<<<<<< HEAD
-    public function renameFile($data){
-        $currentFileUrl = $data['currentFileUrl'];
-        $newFileUrl = $data['newFileUrl'];
-        $newFileName = $data['newFileName'];
-
-        rename($currentFileUrl, $newFileName);
-        return $this->DBManager->findOneSecure('UPDATE files SET file_name =:newFileName, file_url =:newFileUrl WHERE file_url =:currentFileUrl',
-        [
-            'newFileName' => $newFileName,
-            'newFileUrl' => $newFileUrl,
-            'currentFileUrl' => $currentFileUrl,
-        ]);
-=======
-
     public function renameFile($data) {
         $currentPath = $data['filepath'];
         $newpath = $data['newpath'];
@@ -149,7 +134,6 @@ class FileManager {
         unlink($filepath);
         return $this->DBManager->findOneSecure("DELETE FROM files WHERE filepath = :filepath",
             ['filepath' => $filepath]);
->>>>>>> 0e54e7412191c8456f657c5842b278031e07da7a
     }
 
     public function getFileExtension($file_name){
@@ -160,8 +144,5 @@ class FileManager {
         $extensions = array('.jpg', '.jpeg', '.txt','.png','.pdf', '.mp3', '.mp4');
         return in_array($ext, $extensions);
     }
-<<<<<<< HEAD
-=======
 
->>>>>>> 0e54e7412191c8456f657c5842b278031e07da7a
 }
