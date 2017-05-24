@@ -77,5 +77,17 @@ class FileController extends BaseController {
             echo $this->redirect('login');
         }
     }
+    public function modifyFileAction() {
+        if (!empty($_SESSION['user_id'])) {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $fileManager = FileManager::getInstance();
+                $fileManager->modifyFile($_POST['input-filepath'],$_POST['content-modification']);
+                echo $this->redirect('home');
+            }
+        }
+        else {
+            echo $this->redirect('login');
+        }
+    }
 
 }

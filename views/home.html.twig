@@ -30,6 +30,7 @@
             {{ errors }}
         {% endif %}
         {% for file in files %}
+            {% set txt = '' %}
             <!-- check if file belongs to a folder -->
             <div class="file">
                 {% if file.extension == 'image/jpeg' or file.extension == 'image/png' or file.extension == 'image/gif' %}
@@ -51,6 +52,7 @@
                 {% endif %}
                 {{ file.filename }}
                 {% if file.extension == 'text/plain' %}
+                    {% set txt = 'true' %}
                     <a href="?action=editFile">
                         <img src="assets/img/icon_modify.png" class="icon-modify" alt="icon-to-modify">
                     </a>
@@ -73,6 +75,13 @@
                             <img src="assets/img/icon_delete.png" class="icon-delete" alt="icon-to-delete">
                         </label>
                     </a>
+                    {% if txt is not empty %}
+                        <!--<a href="?action=modifyFile">
+                            <label for="{{ file.filepath ~ 'modifyFile' }}">-->
+                                <img src="assets/img/icon_edit_txt.png" class="icon-edit-txt" alt="icon-to-rename">
+                                <!--</label>
+                            </a>-->
+                    {% endif %}
                 </div>
                 <div class="container-forms">
                     <form method="POST" action="?action=renameFile" id="form-rename-file">
@@ -97,25 +106,33 @@
                         </select>
                         <input type="submit" value="Déplacer">
                     </form>
-                    <form method="POST" action="?action=deleteFile">
+                    <form method="POST" action="?action=deleteFile" class="none">
                         <input type="hidden" name="input-filename" value="{{ file.filename }}">
                         <input type="hidden" name="input-filepath" value="{{ file.filepath }}">
                         <p>Supprimer ?</p>
                         <input type="submit" id="{{ file.filepath }}" value="Oui">
                         <!-- non -->
                     </form>
-                    <div class="container-modify-field container-hidden">
-                        <form method="POST" action="?action=modify" id="form-modify">
-                            <input type="hidden" name="input-filename" value="{{ file.filename }}" class="input-hidden">
-                            <input type="hidden" name="input-filepath" value="{{ file.filepath }}" class="input-hidden">
-                            <textarea name="content-modification" placeholder="Ajouter du texte">
-                                    <!--file_get_contents($i['filepath'])-->
-                                 </textarea>
-                            <input type="submit" value="Modifier">
-                        </form>
-                    </div>
+                    {% if txt is not empty %}
+                        <div class="container-modify-field container-hidden none modal">
+                            <div class="modal-content">
+                                <span class="close">&times;</span>
+                                <form method="POST" action="?action=modifyFile" id="form-modify">
+                                    <input type="hidden" name="input-filename" value="{{ file.filename }}" class="input-hidden">
+                                    <input type="hidden" name="input-filepath" value="{{ file.filepath }}" class="input-hidden">
+                                    <textarea name="content-modification" placeholder="Ajouter du texte">
+                                    {% set path = file.filepath %}
+                                        {{ contentFiles[path] }}
+                                </textarea>
+                                    <input type="submit" id="{{ file.filepath ~ 'modifyFile' }}" value="Modifier">
+                                </form>
+                            </div>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         {% endfor %}
     </section>
+
+    <script src="assets/script/script.js"></script>
 {% endblock %}
