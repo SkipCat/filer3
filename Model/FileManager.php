@@ -222,7 +222,7 @@ class FileManager {
     }
 
     public function modifyFile($data) {
-        $file = $this->DBManager->getFileById($data['file_id']);
+        $file = $this->getFileById($data['file_id']);
         return file_put_contents($file['filepath'], $data['content-modification']);
     }
 
