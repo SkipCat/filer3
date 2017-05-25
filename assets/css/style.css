@@ -95,6 +95,8 @@ aside {
   width: 100%; }
   .home-page #folders-box {
     border-bottom: 1px solid #43D1AF; }
+    .home-page #folders-box h3 {
+      color: #6B6B6B; }
     .home-page #folders-box #all-folders {
       display: flex;
       flex-direction: row;
@@ -138,6 +140,8 @@ aside {
   .home-page #files-box .error-message {
     color: crimson;
     font-size: 0.8em; }
+  .home-page #files-box h3 {
+    color: #6B6B6B; }
   .home-page #files-box #all-files {
     display: flex;
     flex-direction: row;

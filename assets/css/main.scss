@@ -120,6 +120,9 @@ aside {
     width: 100%;
     #folders-box{
         border-bottom: 1px solid #43D1AF;
+        h3{
+            color: #6B6B6B;
+        }
         #all-folders{
             @include flex(row, flex-start, space-around);
             flex-wrap: wrap;
@@ -174,6 +177,9 @@ aside {
         .error-message{
             color: crimson;
             font-size: 0.8em;
+        }
+        h3{
+            color: #6B6B6B;
         }
         #all-files{
             @include flex(row, flex-end, space-around);
