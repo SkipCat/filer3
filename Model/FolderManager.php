@@ -131,12 +131,14 @@ class FolderManager {
             $objects = scandir($dirpath);
             foreach ($objects as $object) {
                 if ($object != '.' && $object != '..') {
-                    if (filetype($dirpath . '/' . $object) == 'dir') { // or is_dir()
-                        deleteFolderRecursive($dirpath . '/' . $object); // recursivity
+                    $path = $dirpath . '/' . $object;
+                    if (filetype($path) == 'dir') { // or is_dir()
+                        $folder = $this->getFolderByUrl($path);
+                        deleteFolderRecursive($path, $folder['id']); // recursivity
                     }
                     else {
                         $fileManager = FileManager::getInstance();
-                        $file = $fileManager->getFileByUrl($dirpath . '/' . $object);
+                        $file = $fileManager->getFileByUrl($path);
                         $fileManager->deleteFile($file['id']);
                     }
                 }
@@ -149,28 +151,51 @@ class FolderManager {
     }
 
     public function moveFolder($data) {
-        // get folder to move informations
         $folder = $this->getFolderById($data['folder_id']);
-        $foldername = $folder['foldername'];
-        $folderpath = $folder['folderpath'];
-
-        // get future parent folder informations
-        $newParentFolder = $this->getFolderById($data['folder_parent_id']);
-        foreach ($newParentFolder as $value) {
-            $dirpath = $value['folderpath'];
-            $dir_id = $value['id'];
-        }
-
-        // move folder
-        $newpath = $dirpath . '/' . basename($folderpath);
-        move_folder($dir_id, $foldername, $newpath); // 'move' folder in db (modify path)
-        rename($folderpath, $newpath); // move folder in local
-
-        // move files and folders inside
-
+        $this->moveFolderRecursive($data['folder_id'], $folder['folder_parent_id']);
     }
 
+    public function moveFolderRecursive($folderId, $parentId) {
+        // get folder to move and future parent
+        $dir = $this->getFolderById($folderId);
+        $dirpath = $dir['folderpath'];
+        $newParent = $this->getFolderById($parentId); // get future parent
 
+        // move folder
+        $newpath = $dirpath . '/' . $folderId;
+        $this->DBManager->findOneSecure("UPDATE folders
+            SET id_folder = :parent_id, folderpath = :newpath
+            WHERE id = :id", ['parent_id' => $parentId, 'newpath' => $newpath]
+        );
+        rename($dirpath, $newpath); // move folder in local
 
+        // then move files and folders inside
+        if (is_dir($dirpath)) {
+            $objects = scandir($dirpath);
+            foreach ($objects as $object) {
+                if ($object != '.' && $object != '..') {
+                    $path = $dirpath . '/' . $object;
+                    if (filetype($path) == 'dir') { // or is_dir()
+                        $folderId = basename($path);
+                        $folderParentId = basename($dirpath);
+                        $this->moveFolderRecursive($folderId, $folderParentId); // recursivity
+                    }
+                    else {
+                        $fileManager = FileManager::getInstance();
+                        $file = $fileManager->getFileByUrl($path);
+                        var_dump($file);
+                        $currentFolder = $this->getFolderById($file['id_folder']);
 
+                        $data['filepath'] = $file['filepath'];
+                        $data['id_folder'] = $file['id_folder']; // SAME! file belongs to same direct folder
+                        $data['newpath'] = $currentFolder['folderpath'] . '/' . $file['id']; // get modified direct folderpath
+                        $fileManager->moveFile($data);
+                    }
+                }
+            }
+            reset($objects); // set internal pointer of array 'objects' to its first element
+        }
+    }
+
+    
 }
