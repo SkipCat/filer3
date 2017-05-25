@@ -95,6 +95,9 @@ aside {
   width: 100%; }
   .home-page #folders-box {
     border: 1px solid black; }
+  .home-page #files-box .error-message {
+    color: crimson;
+    font-size: 0.8em; }
   .home-page #files-box #all-files {
     display: flex;
     flex-direction: row;

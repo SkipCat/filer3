@@ -121,10 +121,15 @@ aside {
         border: 1px solid black;
     }
     #files-box{
+        .error-message{
+            color: crimson;
+            font-size: 0.8em;
+        }
         #all-files{
             @include flex(row, flex-end, space-around);
             flex-wrap: wrap;
             align-content: stretch;
+
             .file{
                 width: 20%;
                 border: 1px solid white;
