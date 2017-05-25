@@ -68,20 +68,20 @@ class FileManager {
         }
 
         $result['isFormGood'] = $isFormGood;
-
         return $result;
     }
 
     public function uploadFile($data) {
-        $file['id_user'] = (int)$_SESSION['user_id'];
+        $file['id_user'] = $_SESSION['user_id'];
         $file['id_folder'] = NULL;
         $file['filename'] = $data['userfile']['name'];
         $file['extension'] = $data['userfile']['type'];
         $file['filepath'] = 'uploads/' . $_SESSION['user_name'] . '/' . $data['userfile']['name'];        
         $file['date'] = $this->DBManager->getDatetimeNow();
-        $this->DBManager->insert('files', $file);
 
+        $this->DBManager->insert('files', $file);
         $fileToUpdate = $this->getFileByUrl($file['filepath']);
+
         $newpath = 'uploads/' . $_SESSION['user_name'] . '/' . $fileToUpdate['id'];
         $this->DBManager->findOneSecure("UPDATE files SET filepath = :newpath WHERE filepath = :filepath",
             ['filepath' => $file['filepath'], 'newpath' => $newpath]);
@@ -156,7 +156,6 @@ class FileManager {
                 $result['newpath'] = $newpath;                
             }
         }
-        var_dump($result);
         return $result;
     }
 
@@ -165,14 +164,11 @@ class FileManager {
         $this->uploadFile($files);
     }
 
-    public function deleteFile($data) {
-        $file = $this->getFileById($data['file_id']);
+    public function deleteFile($id) {
+        $file = $this->getFileById($id);
         $filepath = $file['filepath'];
         unlink($filepath);
-
-        $data = $this->DBManager->findOneSecure("DELETE FROM files WHERE id = :id",
-            ['id' => $data['file_id']]);
-        return $data;
+        $this->DBManager->findOneSecure("DELETE FROM files WHERE id = :id", ['id' => $id]);
     }
 
     public function fileCheckMove($data) {

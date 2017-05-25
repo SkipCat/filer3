@@ -13,6 +13,7 @@ class FileController extends BaseController {
                 $fileManager = FileManager::getInstance();
                 $folderManager = FolderManager::getInstance();
                 $data = $fileManager->fileCheckAdd($_POST);
+
                 if ($data['isFormGood']) {
                     $fileManager->uploadFile($_FILES);
                     echo $this->redirect('home');
@@ -20,11 +21,13 @@ class FileController extends BaseController {
                 else {
                     $errors = $data['errors'];
                     $files = $fileManager->getUserFiles();
-
-                    $folders = $folderManager->getUserFolders((int)$_SESSION['user_id']);
-
-                    echo $this->renderView('home.html.twig',
-                        ['errors' => $errors,'files' => $files, 'folders' => $folders]);
+                    $folders = $folderManager->getUserFolders($_SESSION['user_id']);
+                    
+                    echo $this->renderView('home.html.twig', [
+                        'errors' => $errors,
+                        'files' => $files,
+                        'folders' => $folders
+                    ]);
                 }
             }
             else {
@@ -41,6 +44,7 @@ class FileController extends BaseController {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $fileManager = FileManager::getInstance();                
                 $data = $fileManager->checkRenameFile($_POST);
+
                 if ($data['isFormGood']) {
                     $fileManager->renameFile($data);
                     echo $this->redirect('home');
@@ -64,6 +68,7 @@ class FileController extends BaseController {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $fileManager = FileManager::getInstance();                
                 $data = $fileManager->fileCheckAdd($_POST);
+
                 // also check if new file doesn't already exist
                 if ($data['isFormGood']) {
                     $fileManager->replaceFile($_POST, $_FILES);
@@ -101,6 +106,7 @@ class FileController extends BaseController {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $fileManager = FileManager::getInstance();                
                 $data = $fileManager->fileCheckMove($_POST);
+                
                 if ($data['isFormGood']) {
                     $fileManager->moveFile($data);
                     echo $this->redirect('home');
