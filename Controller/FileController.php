@@ -17,7 +17,7 @@ class FileController extends BaseController {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $data = $fileManager->fileCheckAdd($_POST);
                 if ($data['isFormGood']) {
-                    $fileManager->uploadFile($_FILES);
+                    $fileManager->uploadFile($data, $_FILES);
                     $logManager->writeLogUser('access.log', 'User uploaded file.');                    
                     echo $this->redirect('home');
                 }

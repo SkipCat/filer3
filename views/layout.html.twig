@@ -34,6 +34,7 @@
                     <form method="POST" action="?action=uploadFile" enctype="multipart/form-data">
                         <input type="hidden" name="MAX_FILE_SIZE" value="100000000"> <!-- 100Mo here, 100M in file php.ini -->
                         <input type="file" id="file" class="input-file" name="userfile">
+                        <input type="text" name="newname" placeholder="Renommer">
                         <input type="submit" id="input-upload-file" value="Ajouter">
                     </form>
                 </div>
