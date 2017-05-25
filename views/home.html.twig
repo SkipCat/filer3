@@ -65,11 +65,9 @@
                     <span class="filename">{{ file.filename }}</span>
                     <div class="actions file-actions">
 
-                        <img src="assets/img/edit.png" class="icon-rename-file" alt="icon-to-rename">
+                        <img src="assets/img/edit.png" title="renommer" class="icon-rename-file" alt="icon-to-rename">
 
-                        <a href="?action=replaceFile">
-                            <img src="assets/img/exchange.png" class="icon-replace" alt="icon-to-replace">
-                        </a>
+                        <img src="assets/img/exchange.png" title="remplacer" class="icon-replace-file" alt="icon-to-replace">
                         <a href="?action=moveFile">
                             <img src="assets/img/move-file.png" class="icon-move" alt="icon-to-move">
                         </a>
@@ -89,7 +87,7 @@
                         <form method="POST" action="?action=renameFile">
                             <input type="hidden" name="file_id" value="{{ file.id }}">
                             <input type="text" name="newname" placeholder="Nouveau nom">
-                            <input type="submit" value="Renommer">
+                            <button type="submit">Renommer</button>
                         </form>
                         <form method="POST" action="?action=replaceFile" enctype="multipart/form-data">
                             <input type="hidden" name="file_id" value="{{ file.id }}">

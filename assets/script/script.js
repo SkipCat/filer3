@@ -21,4 +21,11 @@ window.onload = function() {
             this.parentNode.parentNode.childNodes[7].childNodes[1].style.display = 'block';
         };
     }
+    var icon_replace_file = document.querySelectorAll(".icon-replace-file");
+    for (var i = 0; i < icon_replace_file.length; i++){
+        icon_replace_file[i].onclick = function () {
+            console.log(this.parentNode.parentNode.childNodes[7].childNodes[3]);
+            this.parentNode.parentNode.childNodes[7].childNodes[3].style.display = 'block';
+        };
+    }
 }

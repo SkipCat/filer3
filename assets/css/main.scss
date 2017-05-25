@@ -149,6 +149,33 @@ aside {
                         padding: 3px;
                     }
                 }
+                .container-forms{
+                    input{
+                        outline: 0;
+                        background: #f2f2f2;
+                        width: 100%;
+                        border: 0;
+                        margin: 0 0 15px;
+                        padding: 10px;
+                        box-sizing: border-box;
+                        font-size: 12px;
+                    }
+                    button{
+                        text-transform: uppercase;
+                        outline: 0;
+                        background: #43D1AF;
+                        width: 100%;
+                        border: 0;
+                        padding: 10px;
+                        color: #FFFFFF;
+                        font-size: 12px;
+                        cursor: pointer;
+                        &:hover{
+                            background: #2EBC99;
+                            border: 1px solid #2EBC99;
+                        }
+                    }
+                }
 
             }
         }
