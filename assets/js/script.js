@@ -35,7 +35,15 @@ window.onload = function() {
     var icon_rename_folder = document.querySelectorAll(".icon-rename-folder");
     for (var i = 0; i < icon_rename_folder.length; i++){
         icon_rename_folder[i].onclick = function () {
+            this.parentNode.parentNode.childNodes[5].childNodes[1].style.display = 'block';
+        };
+    }
+
+    var icon_move_folder = document.querySelectorAll(".icon-move-folder");
+    for (var i = 0; i < icon_move_folder.length; i++){
+        icon_move_folder[i].onclick = function () {
             this.parentNode.parentNode.childNodes[5].childNodes[3].style.display = 'block';
         };
     }
+
 }

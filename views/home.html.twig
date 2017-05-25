@@ -12,7 +12,7 @@
                     </a>
                     <div class="actions folder-actions">
                         <img src="assets/img/rename_folder.png" class="icon-rename-folder" alt="icon-to-rename">
-                        <img src="assets/img/move_folder.png" class="icon-move" alt="icon-to-move">
+                        <img src="assets/img/move_folder.png" class="icon-move-folder" alt="icon-to-move">
                         <!--
                         <a href="{{ file.filepath }}" download="{{ file.filename }}">
                             <img src="assets/img/icon_download.png" alt="icon-to-download">
@@ -29,12 +29,6 @@
                         </form>
                     </div>
                     <div class="container-forms">
-                        <!--
-                        <form method="POST" class="container-forms" action="?action=deleteFolder">
-                            <input type="hidden" name="folder_id" value="{{ folder.id }}">
-                            <input type="image" id="{{ 'deleteFolder'~folder.id }}" src="assets/img/delete_folder.png" class="icon-delete" alt="icon-to-delete">
-                        </form>
-                        -->
                         <form method="POST" action="?action=renameFolder">
                             <input type="hidden" name="folder_id" value="{{ folder.id }}">
                             <input type="text" name="newname" placeholder="Nouveau nom">
