@@ -35,7 +35,6 @@ class FolderManager {
         return $data;
     }
 
-
     public function getFolderById($id) {
         $data = $this->DBManager->findOneSecure("SELECT * FROM folders WHERE id = :id", 
             ['id' => $id]);
@@ -134,7 +133,7 @@ class FolderManager {
                     $path = $dirpath . '/' . $object;
                     if (filetype($path) == 'dir') { // or is_dir()
                         $folder = $this->getFolderByUrl($path);
-                        deleteFolderRecursive($path, $folder['id']); // recursivity
+                        $this->deleteFolderRecursive($path, $folder['id']); // recursivity
                     }
                     else {
                         $fileManager = FileManager::getInstance();
@@ -197,5 +196,5 @@ class FolderManager {
         }
     }
 
-    
+
 }

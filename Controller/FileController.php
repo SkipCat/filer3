@@ -92,7 +92,7 @@ class FileController extends BaseController {
         if (!empty($_SESSION['user_id'])) {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $fileManager = FileManager::getInstance();
-                $fileManager->deleteFile($_POST);
+                $fileManager->deleteFile($_POST['file_id']);
                 echo $this->redirect('home');
             }
         }

@@ -3,8 +3,8 @@
 namespace Controller;
 
 use Model\FolderManager;
-use Model\FileManager;
 use Model\UserManager;
+use Model\FileManager;
 
 class FolderController extends BaseController {
 
@@ -77,23 +77,21 @@ class FolderController extends BaseController {
             $files = $fileManager->getUserFiles();
             $folders = $folderManager->getUserFolders($_SESSION['user_id']);
 
-
             $id_folder = (int)$_GET['id'];
-            $foldersById = $fileManager->getFileByIdFolder($id_folder);
+            $foldersById = $fileManager->getFilesByIdFolder($id_folder);
 
-
-            echo $this->renderView('home.html.twig',
-                [
-                    'user'    => $user,
-                    'files'   => $files,
-                    'folders' => $folders,
-                    'foldersById' => $foldersById,
-                    'id_folder' => $id_folder,
-                 ]);
+            echo $this->renderView('home.html.twig', [
+                'user'    => $user,
+                'files'   => $files,
+                'folders' => $folders,
+                'foldersById' => $foldersById,
+                'id_folder' => $id_folder,
+            ]);
         }
         else {
             echo $this->redirect('login');
         }
     }
+
 
 }
