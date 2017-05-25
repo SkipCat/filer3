@@ -179,11 +179,9 @@ class FileManager {
             $result['errors'] = 'Veuillez saisir un nouveau fichier';
         }
         else {
-            //  get newpath
             $file = $this->getFileById($data['file_id']);
             $folder = $this->DBManager->findOneSecure("SELECT * FROM folders WHERE id = :id",
                 ['id' => $data['folder_id']]);
-            $newpath = $folder['folderpath'] . '/' . $file['filename'];
 
             // check if newname already exists
             $fileExist = $this->getFileByUrl($newpath);

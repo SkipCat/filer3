@@ -57,14 +57,13 @@ class FolderController extends BaseController {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $folderManager = FolderManager::getInstance();
                 $folderManager->deleteFolder($_POST);
-                echo $this->redirect('home');
             }
-            else {
-                echo $this->redirect('home');
-            }
+            echo $this->redirect('home');
         }
         else {
             echo $this->redirect('login');
         }
     }
+
+    
 }
