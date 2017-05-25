@@ -217,4 +217,5 @@ footer {
     @include flex(row, center, center);
     color: #43D1AF;
     min-height: 50px;
+    border: 1px solid #b3b3b3;
 }
