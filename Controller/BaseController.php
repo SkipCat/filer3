@@ -2,8 +2,7 @@
 
 namespace Controller;
 
-class BaseController
-{
+class BaseController {
     private $twig;
 
     public function __construct(\Twig_Environment $twig) {
