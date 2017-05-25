@@ -4,7 +4,6 @@ routes:
     renameFile:     'File:renameFile'
     replaceFile:    'File:replaceFile'
     deleteFile:     'File:deleteFile'
-    modifyFile:     'File:modifyFile'
     moveFile:       'File:moveFile'
     createFolder:   'Folder:createFolder'
     renameFolder:   'Folder:renameFolder'
@@ -19,4 +18,4 @@ db_config:
     name: 'filer3'
     host: 'localhost'
     user: 'root'
-    pass: 'root'
+    pass: ''

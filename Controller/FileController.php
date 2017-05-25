@@ -60,7 +60,6 @@ class FileController extends BaseController {
                 // also check if new file doesn't already exist
                 if ($data['isFormGood']) {
                     $fileManager->replaceFile($_POST, $_FILES);
-                    echo 'replace';
                     echo $this->redirect('home');
                 }
                 else {
@@ -89,18 +88,6 @@ class FileController extends BaseController {
             echo $this->redirect('login');
         }
     }
-    public function modifyFileAction() {
-        if (!empty($_SESSION['user_id'])) {
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $fileManager = FileManager::getInstance();
-                $fileManager->modifyFile($_POST['input-filepath'],$_POST['content-modification']);
-                echo $this->redirect('home');
-            }
-        }
-        else {
-            echo $this->redirect('login');
-        }
-    }
 
     public function moveFileAction() {
         if (!empty($_SESSION['user_id'])) {
@@ -109,7 +96,7 @@ class FileController extends BaseController {
                 $data = $fileManager->fileCheckMove($_POST);
                 if ($data['isFormGood']) {
                     $fileManager->moveFile($data);
-                    //echo $this->redirect('home');
+                    echo $this->redirect('home');
                 }
                 else {
                     $errors = $data['errors'];
@@ -117,6 +104,19 @@ class FileController extends BaseController {
                 }
             }
             else {
+                echo $this->redirect('home');
+            }
+        }
+        else {
+            echo $this->redirect('login');
+        }
+    }
+
+    public function modifyFileAction() {
+        if (!empty($_SESSION['user_id'])) {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $fileManager = FileManager::getInstance();
+                $fileManager->modifyFile($_POST);
                 echo $this->redirect('home');
             }
         }

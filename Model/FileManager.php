@@ -45,6 +45,8 @@ class FileManager {
         return $data;
     }
 
+    ############################
+
     public function fileCheckAdd($data) {
         $isFormGood = true;
         $errors = [];
@@ -80,8 +82,7 @@ class FileManager {
         $file['date'] = $this->DBManager->getDatetimeNow();
         $this->DBManager->insert('files', $file);
 
-        $fileToUpdate = $this->DBManager->findOneSecure("SELECT * FROM files WHERE filepath = :filepath",
-            ['filepath' => $file['filepath']]);
+        $fileToUpdate = $this->getFileByUrl($file['filepath']);
         $newpath = 'uploads/' . $_SESSION['user_name'] . '/' . $fileToUpdate['id'];
         $this->DBManager->findOneSecure("UPDATE files SET filepath = :newpath WHERE filepath = :filepath",
             ['filepath' => $file['filepath'], 'newpath' => $newpath]);
@@ -97,10 +98,6 @@ class FileManager {
             $result['errors'] = 'Veuillez saisir le nouveau nom du fichier';
         }
         else {
-            $file = $this->DBManager->findOneSecure("SELECT * FROM files
-                WHERE id = :id", ['id' => $data['file_id']]
-            );
-
             // check if newname already exists
             $fileExist = $this->getFileByName($data['newname']);
             if ($fileExist) {
@@ -133,8 +130,7 @@ class FileManager {
             $result['errors'] = 'Veuillez saisir un nouveau fichier';
         }
         else {
-            $file = $this->DBManager->findOneSecure("SELECT * FROM files WHERE id = :id", 
-                ['id' => $post['file_id']]);
+            $file = $this->getFileById($post['file_id']);
             $newname = $files['newfile']['name'];
             $newtype = $files['newfile']['type'];
 
@@ -166,10 +162,7 @@ class FileManager {
     }
 
     public function replaceFile($post, $files) {
-        $file = $this->DBManager->findOneSecure("SELECT * FROM files WHERE id = :id",
-            ['id' => $post['file_id']]);
-
-        $this->deleteFile($post['file_id']);
+        $this->deleteFile($post);
         $this->uploadFile($files);
     }
 
@@ -186,21 +179,16 @@ class FileManager {
     public function fileCheckMove($data) {
         $result['isFormGood'] = true;
 
-        if ($data['folderpath'] == NULL) { // empty field
+        if ($data['folder_id'] == NULL) { // empty field
             $result['isFormGood'] = false;
             $result['errors'] = 'Veuillez saisir un nouveau fichier';
         }
         else {
             //  get newpath
-            $file = $this->DBManager->findOneSecure("SELECT * FROM files WHERE filepath = :filepath", 
-                ['filepath' => $data['filepath']]);
-            $newpath = $data['folderpath'] . '/' . $file['filename'];
-
-            $folder = $this->DBManager->findOneSecure("SELECT * FROM folders WHERE folderpath = :folderpath",
-                ['folderpath' => $data['folderpath']]);
-            var_dump($folder);
-            $folderpath = $folder['folderpath'];
-            $folderId = $folder['id'];
+            $file = $this->getFileById($data['file_id']);
+            $folder = $this->DBManager->findOneSecure("SELECT * FROM folders WHERE id = :id",
+                ['id' => $data['folder_id']]);
+            $newpath = $folder['folderpath'] . '/' . $file['filename'];
 
             // check if newname already exists
             $fileExist = $this->getFileByUrl($newpath);
@@ -209,15 +197,16 @@ class FileManager {
                 $result['errors'] = 'Le fichier existe déjà dans le dossier que vous avez sélectionné';
             }
             else {
-                $result['filepath'] = $data['filepath'];
-                $result['id_folder'] = $folderId;
-                $result['newpath'] = $folderpath;                
+                $result['filepath'] = $file['filepath'];
+                $result['id_folder'] = $data['folder_id'];
+                $result['newpath'] = $folder['folderpath'] . '/' . $data['file_id'];                
             }
         }
         return $result;
     }
 
     public function moveFile($data) {
+        rename($data['filepath'], $data['newpath']);
         $query = $this->DBManager->findOneSecure("UPDATE files
             SET id_folder = :new_id, filepath = :newpath
             WHERE filepath = :filepath", [
@@ -228,16 +217,20 @@ class FileManager {
         return $query;
     }
 
-    public function getFileExtension($file_name){
+    public function modifyFile($data) {
+        $file = $this->DBManager->getFileById($data['file_id']);
+        return file_put_contents($file['filepath'], $data['content-modification']);
+    }
+
+    #####################
+
+    public function getFileExtension($file_name) {
         return strrchr($file_name, '.');
     }
 
-    public function extensionAccept($ext){
+    public function extensionAccept($ext) {
         $extensions = array('.jpg', '.jpeg', '.txt','.png','.pdf', '.mp3', '.mp4');
         return in_array($ext, $extensions);
-    }
-    public function modifyFile($filepath,$current){
-        return file_put_contents($filepath, $current);
     }
 
 }

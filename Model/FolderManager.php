@@ -41,11 +41,13 @@ class FolderManager {
 
     public function folderCheckAdd($data) {
         $result['isFormGood'] = true;
+        
         $folderExist = $this->DBManager->findOneSecure("SELECT * FROM folders WHERE foldername = :foldername",
             ['foldername' => $data['foldername']]);
+
         if ($folderExist) {
             $result['isFormGood'] = false;
-            $result['errors'] = 'Le fichier existe déjà';
+            $result['errors'] = 'Le dossier existe déjà';
         }
         else {
             $result['foldername'] = $data['foldername'];
@@ -79,8 +81,8 @@ class FolderManager {
             $result['errors'] = 'Veuillez saisir le nouveau nom du fichier';
         }
         else {
-            $folder = $this->DBManager->findOneSecure("SELECT * FROM folders WHERE foldername = :foldername", 
-                ['foldername' => $data['foldername']]);
+            $folder = $this->DBManager->findOneSecure("SELECT * FROM folders WHERE id = :id", 
+                ['id' => $data['folder_id']]);
 
             // check if file belongs to a folder
             if ($folder['id_folder'] == NULL) {
@@ -95,10 +97,10 @@ class FolderManager {
             $folderExist = $this->getFolderByUrl($newpath);
             if ($folderExist) {
                 $result['isFormGood'] = false;
-                $result['errors'] = 'Le fichier existe déjà';
+                $result['errors'] = 'Le dossier existe déjà';
             }
             else {
-                $result['folderpath'] = $folder['folderpath'];
+                $result['folder_id'] = $data['folder_id'];
                 $result['newname'] = $data['newname'];
                 $result['newpath'] = $newpath;
             }
@@ -107,13 +109,11 @@ class FolderManager {
     }
 
     public function renameFolder($data) {
-        rename($data['folderpath'], $data['newpath']);
         $query = $this->DBManager->findOneSecure("UPDATE folders
-            SET foldername = :newname, folderpath = :newpath
-            WHERE folderpath = :currentPath", [
+            SET foldername = :newname
+            WHERE id = :id", [
                 'newname' => $data['newname'],
-                'newpath' => $data['newpath'],
-                'currentPath' => $data['folderpath'],
+                'id' => $data['folder_id'],
         ]);
         return $query;
     }

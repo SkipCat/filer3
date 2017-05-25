@@ -17,10 +17,10 @@ class DefaultController extends BaseController {
             $user = $userManager->getUserById($_SESSION['user_id']);
             $files = $fileManager->getUserFiles();
             $folders = $folderManager->getUserFolders($_SESSION['user_id']);
-            $contentFiles = [];
+
             //getContentFile
-            foreach ($files as $file){
-                if($file['extension'] == 'text/plain'){
+            foreach ($files as $file) {
+                if ($file['extension'] == 'text/plain') {
                     $contentFiles[$file['filepath']] = file_get_contents($file['filepath']);
                 }
             }
@@ -29,7 +29,6 @@ class DefaultController extends BaseController {
                 'user'    => $user,
                 'files'   => $files,
                 'folders' => $folders,
-                'contentFiles' => $contentFiles,
             ]);
         }
         else {

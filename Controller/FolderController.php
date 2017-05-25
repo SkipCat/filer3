@@ -36,7 +36,7 @@ class FolderController extends BaseController {
                 $data = $folderManager->folderCheckRename($_POST);
                 if ($data['isFormGood']) {
                     $folderManager->renameFolder($data);
-                    //echo $this->redirect('home');
+                    echo $this->redirect('home');
                 }
                 else {
                     $errors = $data['errors'];

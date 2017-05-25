@@ -1,17 +1,14 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
-    <div class="log-page">
-        <div class="form">
-            {% if errors is defined %}
-                <p class="error-message">{{ errors }}</p>
-            {% endif %}
-            <form class="login-form" method="POST" action="?action=login">
-                <input id="username" type="text" name="username" placeholder="Pseudo*">
-                <input id="password" type="password" name="password" placeholder="Mot de Passe*">
-                <button type="submit" name="submitLogin">login</button>
-                <p class="message">Pas de compte? <a href="?action=register">S'inscrire</a></p>
-            </form>
-        </div>
-    </div>
+    {% if errors is defined %}
+        {{ errors }}
+    {% endif %}
+    <section>
+        <form method="POST" action="?action=login">
+            <input id="username" type="text" name="username" placeholder="Pseudo*">
+            <input id="password" type="password" name="password" placeholder="Mot de Passe*">
+            <button type="submit" name="submitLogin" id="button">Se connecter</button>
+        </form>
+    </section>
 {% endblock %}
