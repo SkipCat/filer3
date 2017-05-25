@@ -34,7 +34,7 @@
         <div id="files-box">
             <h3>Fichiers</h3>
             {% if errors is defined and errors is not empty %}
-                {{ errors }}
+                <span class="error-message">{{ errors }}</span>
             {% endif %}
             <div id="all-files">
             {% for file in files %}

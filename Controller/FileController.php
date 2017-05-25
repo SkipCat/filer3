@@ -3,13 +3,15 @@
 namespace Controller;
 
 use Model\FileManager;
+use Model\FolderManager;
 
 class FileController extends BaseController {
 
     public function uploadFileAction() {
         if (!empty($_SESSION['user_id'])) {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $fileManager = FileManager::getInstance();                
+                $fileManager = FileManager::getInstance();
+                $folderManager = FolderManager::getInstance();
                 $data = $fileManager->fileCheckAdd($_POST);
                 if ($data['isFormGood']) {
                     $fileManager->uploadFile($_FILES);
@@ -17,7 +19,12 @@ class FileController extends BaseController {
                 }
                 else {
                     $errors = $data['errors'];
-                    echo $this->renderView('home.html.twig', ['errors' => $errors[0]]);
+                    $files = $fileManager->getUserFiles();
+
+                    $folders = $folderManager->getUserFolders((int)$_SESSION['user_id']);
+
+                    echo $this->renderView('home.html.twig',
+                        ['errors' => $errors,'files' => $files, 'folders' => $folders]);
                 }
             }
             else {

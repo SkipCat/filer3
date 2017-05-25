@@ -49,8 +49,7 @@ class FileManager {
 
     public function fileCheckAdd($data) {
         $isFormGood = true;
-        $errors = [];
-        $res = [];
+        $result = [];
 
         if (isset($_FILES['userfile']['name']) && !empty($_FILES) && $_FILES['userfile']['name'] !== "") {
             $data['filename'] = $_FILES['userfile']['name'];
@@ -64,12 +63,12 @@ class FileManager {
             }
         }
         else {
-            $errors['file'] = 'Veuillez choisir une image';
+            $result['errors'] = 'Veuillez choisir un fichier';
             $isFormGood = false;
         }
 
         $result['isFormGood'] = $isFormGood;
-        $result['errors'] = $errors;
+
         return $result;
     }
 
