@@ -32,4 +32,10 @@ window.onload = function() {
             this.parentNode.parentNode.childNodes[7].childNodes[5].style.display = 'block';
         };
     }
+    var icon_rename_folder = document.querySelectorAll(".icon-rename-folder");
+    for (var i = 0; i < icon_rename_folder.length; i++){
+        icon_rename_folder[i].onclick = function () {
+            this.parentNode.parentNode.childNodes[5].childNodes[3].style.display = 'block';
+        };
+    }
 }

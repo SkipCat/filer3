@@ -94,7 +94,47 @@ aside {
   background: #FFFFFF;
   width: 100%; }
   .home-page #folders-box {
-    border: 1px solid black; }
+    border-bottom: 1px solid #43D1AF; }
+    .home-page #folders-box #all-folders {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      align-content: stretch;
+      width: 100%; }
+      .home-page #folders-box #all-folders .folder {
+        border: 1px solid white;
+        width: 15%;
+        text-align: center; }
+        .home-page #folders-box #all-folders .folder .foldername {
+          color: #6B6B6B;
+          margin: 10px;
+          font-size: 1em; }
+        .home-page #folders-box #all-folders .folder .folder-actions img {
+          padding: 5px; }
+        .home-page #folders-box #all-folders .folder .container-forms input {
+          outline: 0;
+          background: #f2f2f2;
+          width: 100%;
+          border: 0;
+          margin: 0 0 15px;
+          padding: 10px;
+          box-sizing: border-box;
+          font-size: 12px; }
+        .home-page #folders-box #all-folders .folder .container-forms button {
+          text-transform: uppercase;
+          outline: 0;
+          background: #43D1AF;
+          width: 100%;
+          border: 0;
+          padding: 10px;
+          color: #FFFFFF;
+          font-size: 12px;
+          cursor: pointer; }
+          .home-page #folders-box #all-folders .folder .container-forms button:hover {
+            background: #2EBC99;
+            border: 1px solid #2EBC99; }
   .home-page #files-box .error-message {
     color: crimson;
     font-size: 0.8em; }

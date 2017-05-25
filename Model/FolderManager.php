@@ -136,7 +136,6 @@ class FolderManager {
                     else {
                         $fileManager = FileManager::getInstance();
                         $file = $fileManager->getFileByUrl($dirpath . '/' . $object);
-                        var_dump($file);
                         $fileManager->deleteFile($file['id']);
                     }
                 }

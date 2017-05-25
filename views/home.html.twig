@@ -4,33 +4,38 @@
     <div class="home-page">
         <div id="folders-box">
             <h3>Dossiers</h3>
+            <div id="all-folders">
             {% for folder in folders %}
                 <div class="folder">
-                    {{ folder.foldername }}
+                    <span class="foldername">{{ folder.foldername }}</span>
                     <div class="actions folder-actions">
-                        <img src="assets/img/icon_rename.png" class="icon-rename" alt="icon-to-rename">
-                        <a href="?action=moveFolder">
-                            <img src="assets/img/icon_folder.png" class="icon-move" alt="icon-to-move">
-                        </a>
+                        <img src="assets/img/rename_folder.png" class="icon-rename-folder" alt="icon-to-rename">
+                        <img src="assets/img/move_folder.png" class="icon-move" alt="icon-to-move">
                         <!--
                         <a href="{{ file.filepath }}" download="{{ file.filename }}">
                             <img src="assets/img/icon_download.png" alt="icon-to-download">
                         </a>
                         -->
-                        <form method="POST" action="?action=deleteFolder">
-                            <input type="hidden" name="folder_id" value="{{ folder.id }}">
-                            <input type="image" src="assets/img/remove.png" class="icon-delete" alt="icon-to-delete">
-                        </form>
+                        <label for="{{ 'deleteFolder'~folder.id }}">
+                            <img src="assets/img/remove.png" alt="icon-to-delete">
+                        </label>
+
+
                     </div>
                     <div class="container-forms">
+                        <form method="POST" class="container-forms" action="?action=deleteFolder">
+                            <input type="hidden" name="folder_id" value="{{ folder.id }}">
+                            <input type="image" id="{{ 'deleteFolder'~folder.id }}" src="assets/img/delete_folder.png" class="icon-delete" alt="icon-to-delete">
+                        </form>
                         <form method="POST" action="?action=renameFolder">
                             <input type="hidden" name="folder_id" value="{{ folder.id }}">
                             <input type="text" name="newname" placeholder="Nouveau nom">
-                            <input type="submit" value="Renommer">
+                            <button type="submit">Renommer</button>
                         </form>
                     </div>
                 </div>
             {% endfor %}
+            </div>
         </div>
         <div id="files-box">
             <h3>Fichiers</h3>
@@ -104,15 +109,6 @@
                             </select>
                             <button type="submit">Déplacer</button>
                         </form>
-                        <!--
-                            <form method="POST" action="?action=deleteFile">
-                                <input type="hidden" name="input-filename" value="{{ file.filename }}">
-                                <input type="hidden" name="file_id" value="{{ file.id }}">
-                                <input type="hidden" name="input-filepath" value="{{ file.filepath }}">
-                                <p>Supprimer ?</p>
-                                <input type="submit" id="{{ file.filepath ~ 'delete' }}" value="Oui">
-                            </form>
-                        -->
                         {% if txt is not empty %}
                             <div class="container-modify-field container-hidden none modal">
                                 <div class="modal-content">
