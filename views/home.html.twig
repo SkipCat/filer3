@@ -8,9 +8,7 @@
                 <div class="folder">
                     {{ folder.foldername }}
                     <div class="actions folder-actions">
-                        <a href="?action=renameFolder">
-                            <img src="assets/img/icon_rename.png" class="icon-rename" alt="icon-to-rename">
-                        </a>
+                        <img src="assets/img/icon_rename.png" class="icon-rename" alt="icon-to-rename">
                         <a href="?action=moveFolder">
                             <img src="assets/img/icon_folder.png" class="icon-move" alt="icon-to-move">
                         </a>
@@ -66,9 +64,9 @@
 
                     <span class="filename">{{ file.filename }}</span>
                     <div class="actions file-actions">
-                        <a href="?action=renameFile">
-                            <img src="assets/img/edit.png" class="icon-rename" alt="icon-to-rename">
-                        </a>
+
+                        <img src="assets/img/edit.png" class="icon-rename-file" alt="icon-to-rename">
+
                         <a href="?action=replaceFile">
                             <img src="assets/img/exchange.png" class="icon-replace" alt="icon-to-replace">
                         </a>
@@ -79,21 +77,15 @@
                             <img src="assets/img/download.png" alt="icon-to-download">
                         </a>
 
-                        <!--
-                        <label for="{{ file.filepath ~ 'delete' }}">
-                            <img src="assets/img/remove.png" alt="icon-to-delete">
-                        </label>
-                        -->
-                        <form method="POST" action="?action=deleteFile">
-                            <input type="hidden" name="file_id" value="{{ file.id }}">
-                            <input type="image" src="assets/img/icon_delete.png" class="icon-delete" alt="icon-to-delete">
-                        </form>
                         {% if txt is not empty %}
                             <img src="assets/img/text.png" class="icon-edit-txt" alt="icon-to-rename">
                         {% endif %}
+                        <form method="POST" action="?action=deleteFile">
+                            <input type="hidden" name="file_id" value="{{ file.id }}">
+                            <input type="image" src="assets/img/remove.png" class="icon-delete" alt="icon-to-delete">
+                        </form>
                     </div>
                     <div class="container-forms">
-                        <form></form>
                         <form method="POST" action="?action=renameFile">
                             <input type="hidden" name="file_id" value="{{ file.id }}">
                             <input type="text" name="newname" placeholder="Nouveau nom">
@@ -116,13 +108,13 @@
                             <input type="submit" value="Déplacer">
                         </form>
                         <!--
-                        <form method="POST" action="?action=deleteFile">
-                            <input type="hidden" name="input-filename" value="{{ file.filename }}">
-                            <input type="hidden" name="file_id" value="{{ file.id }}">
-                            <input type="hidden" name="input-filepath" value="{{ file.filepath }}">
-                            <p>Supprimer ?</p>
-                            <input type="submit" id="{{ file.filepath ~ 'delete' }}" value="Oui">
-                        </form>
+                            <form method="POST" action="?action=deleteFile">
+                                <input type="hidden" name="input-filename" value="{{ file.filename }}">
+                                <input type="hidden" name="file_id" value="{{ file.id }}">
+                                <input type="hidden" name="input-filepath" value="{{ file.filepath }}">
+                                <p>Supprimer ?</p>
+                                <input type="submit" id="{{ file.filepath ~ 'delete' }}" value="Oui">
+                            </form>
                         -->
                         {% if txt is not empty %}
                             <div class="container-modify-field container-hidden none modal">
@@ -131,7 +123,7 @@
                                     <form method="POST" action="?action=modifyFile" id="form-modify">
                                         <input type="hidden" name="file_id" value="{{ file.id }}" class="input-hidden">
                                         <textarea name="content-modification" placeholder="Ajouter du texte">
-                                    {% set path = file.filepath %}
+                                            {% set path = file.filepath %}
                                             {{ contentFiles[path] }}
                                         </textarea>
                                         <input type="submit" id="{{ file.filepath ~ 'modifyFile' }}" value="Modifier">

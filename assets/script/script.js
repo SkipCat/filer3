@@ -14,4 +14,11 @@ window.onload = function() {
             modal[i].style.display = "none";
         }
     });
+    var icon_rename_file = document.querySelectorAll(".icon-rename-file");
+    for (var i = 0; i < icon_rename_file.length; i++){
+        icon_rename_file[i].onclick = function () {
+            console.log(this.parentNode.parentNode.childNodes[7].childNodes[1]);
+            this.parentNode.parentNode.childNodes[7].childNodes[1].style.display = 'block';
+        };
+    }
 }

@@ -6,7 +6,6 @@ routes:
     deleteFile:     'File:deleteFile'
     moveFile:       'File:moveFile'
     createFolder:   'Folder:createFolder'
-    renameFolder:   'Folder:renameFolder'
     login:          'Security:login'
     logout:         'Security:logout'
     register:       'Security:register'
@@ -18,4 +17,4 @@ db_config:
     name: 'filer3'
     host: 'localhost'
     user: 'root'
-    pass: ''
+    pass: 'root'
