@@ -2,6 +2,8 @@
 
 namespace Model;
 
+use Model\FileModel;
+
 class FolderManager {
 
     private $DBManager;
@@ -117,5 +119,40 @@ class FolderManager {
         ]);
         return $query;
     }
+
+    public function deleteFolder($data) {
+        $folder = $this->getFolderById($data['folder_id']);
+        //unlink($folder['folderpath']);
+        $this->deleteFolderRecursive($folder['folderpath'], $data['folder_id']);
+        
+        /*
+        $data = $this->DBManager->findOneSecure("DELETE FROM folders WHERE id = :id",
+            ['id' => $data['folder_id']]);
+        return $data;
+        */
+    }
+
+    function deleteFolderRecursive($dirpath, $dirid) {
+        if (is_dir($dirpath)) {
+            $objects = scandir($dirpath);
+            foreach ($objects as $object) {
+                if ($object != '.' && $object != '..') {
+                    if (filetype($dirpath . '/' . $object) == 'dir') { // or is_dir()
+                        deleteFolderRecursive($dirpath . '/' . $object); // recursivity
+                    }
+                    else {
+                        $fileManager = FileManager::getInstance();
+                        $fileManager->deleteFile($object);
+                        unlink($dirpath . '/' . $object);
+                    }
+                }
+            }
+            reset($objects); // set internal pointer of array 'objects' to its first element
+            rmdir($dirpath); // delete folder in local
+            $this->DBManager->findOneSecure("DELETE FROM folders WHERE id = :id",
+                ['id' => $dirid]); // delete folder in db
+        }
+    }
+
 
 }

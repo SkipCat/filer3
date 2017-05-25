@@ -51,4 +51,19 @@ class FolderController extends BaseController {
             echo $this->redirect('login');
         }
     }
+
+    public function deleteFolderAction() {
+        if (!empty($_SESSION['user_id'])) {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $folderManager = FolderManager::getInstance();
+                $folderManager->deleteFolder($_POST);
+            }
+            else {
+                echo $this->redirect('home');
+            }
+        }
+        else {
+            echo $this->redirect('login');
+        }
+    }
 }
