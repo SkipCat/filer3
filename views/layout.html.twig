@@ -12,7 +12,7 @@
     <body>
         <header>
             {% if user is defined and not empty %}
-                <a href="?action=profile" class="user-connect">{{ user.username }}</a>
+                <span class="user-connect">{{ user.username }}</span>
             {% else %}
                 <a href="?action=login" class="user-connect">Connexion</a>
             {% endif %}

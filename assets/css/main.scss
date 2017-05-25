@@ -57,7 +57,7 @@ header {
 
 aside {
     background-color: #f6f7f9;
-    width: 300px;
+    width: 20%;
     div{
         width: 100%;
         padding: 10%;
@@ -117,7 +117,9 @@ aside {
 
 .home-page {
     background: #FFFFFF;
-    width: 100%;
+    width: 78%;
+    //border: 1px solid black;
+    padding: 2%;
     #folders-box{
         border-bottom: 1px solid #43D1AF;
         h3{
@@ -249,7 +251,8 @@ aside {
 }
 .log-page{
 
-    width: 50%;
+    width: 78%;
+    padding: 2%;
     margin: auto;
 
     .form {

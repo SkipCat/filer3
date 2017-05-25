@@ -7,7 +7,9 @@
             <div id="all-folders">
             {% for folder in folders %}
                 <div class="folder">
-                    <span class="foldername">{{ folder.foldername }}</span>
+                    <a href="?action=folders&id={{ folder.id }}">
+                        <span class="foldername">{{ folder.foldername }}</span>
+                    </a>
                     <div class="actions folder-actions">
                         <img src="assets/img/rename_folder.png" class="icon-rename-folder" alt="icon-to-rename">
                         <img src="assets/img/move_folder.png" class="icon-move" alt="icon-to-move">
@@ -43,90 +45,180 @@
                 <p class="error-message">{{ errors }}</p>
             {% endif %}
             <div id="all-files">
-            {% for file in files %}
-                {% set txt = '' %}
-                <!-- check if file belongs to a folder -->
-                <div class="file">
-                    {% if file.extension == 'image/jpeg' or file.extension == 'image/png' or file.extension == 'image/gif' %}
-                        <img src="{{ file.filepath }}" class="preview" alt="preview-img">
-                    {% elseif file.extension == 'text/plain' %}
-                        {% set txt = 'true' %}
-                        <img src="assets/img/txt.png" class="preview" alt="preview-text">
-                    {% elseif file.extension == 'application/pdf' %}
-                        <img src="assets/img/pdf-icon.png" class="preview" alt="preview-pdf">
-                    {% elseif file.extension == 'audio/mpeg' %}
-                        <audio src="{{ file.filepath }}" class="preview" controls>
-                            <source type="audio/mpeg" alt="preview-mp3">
-                        </audio>
-                    {% elseif file.extension == 'video/3gpp' or file.extension == 'video/mp4' %}
-                        <video width="220" height="140" class="preview" controls>
-                            <source src="{{ file.filepath }}" type="video/mp4">
-                        </video>
-                    {% elseif file.extension == 'application/zip' or file.extension == 'application/x-rar-compressed' %}
-                        <img src="assets/img/icon-archive.png" class="preview" alt="preview-pdf">
-                    {% endif %}
-
-
-
-                    <span class="filename">{{ file.filename }}</span>
-                    <div class="actions file-actions">
-
-                        <img src="assets/img/edit.png" title="Renommer" class="icon-rename-file" alt="icon-to-rename">
-
-                        <img src="assets/img/exchange.png" title="Remplacer" class="icon-replace-file" alt="icon-to-replace">
-                        <img src="assets/img/move-file.png" title="Déplacer" class="icon-move-file" alt="icon-to-move">
-                        <a href="{{ file.filepath }}" download="{{ file.filename }}">
-                            <img src="assets/img/download.png" alt="icon-to-download">
-                        </a>
-
-                        {% if txt is not empty %}
-                            <img src="assets/img/text.png" class="icon-edit-txt" alt="icon-to-rename">
+            {% if foldersById is defined and foldersById is not empty %}
+                {% for file in foldersById %}
+                    {% set txt = '' %}
+                    <!-- check if file belongs to a folder -->
+                    <div class="file">
+                        {% if file.extension == 'image/jpeg' or file.extension == 'image/png' or file.extension == 'image/gif' %}
+                            <img src="{{ file.filepath }}" class="preview" alt="preview-img">
+                        {% elseif file.extension == 'text/plain' %}
+                            {% set txt = 'true' %}
+                            <img src="assets/img/txt.png" class="preview" alt="preview-text">
+                        {% elseif file.extension == 'application/pdf' %}
+                            <img src="assets/img/pdf-icon.png" class="preview" alt="preview-pdf">
+                        {% elseif file.extension == 'audio/mpeg' %}
+                            <audio src="{{ file.filepath }}" class="preview" controls>
+                                <source type="audio/mpeg" alt="preview-mp3">
+                            </audio>
+                        {% elseif file.extension == 'video/3gpp' or file.extension == 'video/mp4' %}
+                            <video width="220" height="140" class="preview" controls>
+                                <source src="{{ file.filepath }}" type="video/mp4">
+                            </video>
+                        {% elseif file.extension == 'application/zip' or file.extension == 'application/x-rar-compressed' %}
+                            <img src="assets/img/icon-archive.png" class="preview" alt="preview-pdf">
                         {% endif %}
-                        <form method="POST" action="?action=deleteFile">
-                            <input type="hidden" name="file_id" value="{{ file.id }}">
-                            <input type="image" src="assets/img/remove.png" class="icon-delete" alt="icon-to-delete">
-                        </form>
-                    </div>
-                    <div class="container-forms">
-                        <form method="POST" action="?action=renameFile">
-                            <input type="hidden" name="file_id" value="{{ file.id }}">
-                            <input type="text" name="newname" placeholder="Nouveau nom">
-                            <button type="submit">Renommer</button>
-                        </form>
-                        <form method="POST" action="?action=replaceFile" enctype="multipart/form-data">
-                            <input type="hidden" name="file_id" value="{{ file.id }}">
-                            <input type="hidden" name="MAX_FILE_SIZE" value="100000000">                            
-                            <input type="file" name="userfile">
-                            <button type="submit">Remplacer</button>
-                        </form>
-                        <form method="POST" action="?action=moveFile">
-                            <input type="hidden" name="file_id" value="{{ file.id }}">
-                            <select name="folder_id">
+
+
+
+                        <span class="filename">{{ file.filename }}</span>
+                        <div class="actions file-actions">
+
+                            <img src="assets/img/edit.png" title="Renommer" class="icon-rename-file" alt="icon-to-rename">
+
+                            <img src="assets/img/exchange.png" title="Remplacer" class="icon-replace-file" alt="icon-to-replace">
+                            <img src="assets/img/move-file.png" title="Déplacer" class="icon-move-file" alt="icon-to-move">
+                            <a href="{{ file.filepath }}" download="{{ file.filename }}">
+                                <img src="assets/img/download.png" alt="icon-to-download">
+                            </a>
+
+                            {% if txt is not empty %}
+                                <img src="assets/img/text.png" class="icon-edit-txt" alt="icon-to-rename">
+                            {% endif %}
+                            <form method="POST" action="?action=deleteFile">
+                                <input type="hidden" name="file_id" value="{{ file.id }}">
+                                <input type="image" src="assets/img/remove.png" class="icon-delete" alt="icon-to-delete">
+                            </form>
+                        </div>
+                        <div class="container-forms">
+                            <form method="POST" action="?action=renameFile">
+                                <input type="hidden" name="file_id" value="{{ file.id }}">
+                                <input type="text" name="newname" placeholder="Nouveau nom">
+                                <button type="submit">Renommer</button>
+                            </form>
+                            <form method="POST" action="?action=replaceFile" enctype="multipart/form-data">
+                                <input type="hidden" name="file_id" value="{{ file.id }}">
+                                <input type="hidden" name="MAX_FILE_SIZE" value="100000000">
+                                <input type="file" name="userfile">
+                                <button type="submit">Remplacer</button>
+                            </form>
+                            <form method="POST" action="?action=moveFile">
+                                <input type="hidden" name="file_id" value="{{ file.id }}">
+                                <select name="folder_id">
                                     <option value="NULL">Sélectionnez un dossier</option>
-                                {% for folder in folders %}
-                                    <option value="{{ folder.id }}">{{ folder.foldername }}</option>
-                                {% endfor %}
-                            </select>
-                            <button type="submit">Déplacer</button>
-                        </form>
-                        {% if txt is not empty %}
-                            <div class="container-modify-field container-hidden none modal">
-                                <div class="modal-content">
-                                    <span class="close">&times;</span>
-                                    <form method="POST" action="?action=modifyFile" id="form-modify">
-                                        <input type="hidden" name="file_id" value="{{ file.id }}" class="input-hidden">
-                                        <textarea name="content-modification" placeholder="Ajouter du texte">
+                                    {% for folder in folders %}
+                                        <option value="{{ folder.id }}">{{ folder.foldername }}</option>
+                                    {% endfor %}
+                                </select>
+                                <button type="submit">Déplacer</button>
+                            </form>
+                            {% if txt is not empty %}
+                                <div class="container-modify-field container-hidden none modal">
+                                    <div class="modal-content">
+                                        <span class="close">&times;</span>
+                                        <form method="POST" action="?action=modifyFile" id="form-modify">
+                                            <input type="hidden" name="file_id" value="{{ file.id }}" class="input-hidden">
+                                            <textarea name="content-modification" placeholder="Ajouter du texte">
                                             {% set path = file.filepath %}
-                                            {{ contentFiles[path] }}
+                                                {{ contentFiles[path] }}
                                         </textarea>
-                                        <input type="submit" id="{{ file.filepath ~ 'modifyFile' }}" value="Modifier">
-                                    </form>
+                                            <input type="submit" id="{{ file.filepath ~ 'modifyFile' }}" value="Modifier">
+                                        </form>
+                                    </div>
                                 </div>
-                            </div>
-                        {% endif %}
+                            {% endif %}
+                        </div>
                     </div>
-                </div>
-            {% endfor %}
+                {% endfor %}
+                {% elseif id_folder is defined and foldersById is empty %}
+                    Dossier vide ...
+                {% else %}
+                    {% for file in files %}
+                        {% set txt = '' %}
+                        <!-- check if file belongs to a folder -->
+                        <div class="file">
+                            {% if file.extension == 'image/jpeg' or file.extension == 'image/png' or file.extension == 'image/gif' %}
+                                <img src="{{ file.filepath }}" class="preview" alt="preview-img">
+                            {% elseif file.extension == 'text/plain' %}
+                                {% set txt = 'true' %}
+                                <img src="assets/img/txt.png" class="preview" alt="preview-text">
+                            {% elseif file.extension == 'application/pdf' %}
+                                <img src="assets/img/pdf-icon.png" class="preview" alt="preview-pdf">
+                            {% elseif file.extension == 'audio/mpeg' %}
+                                <audio src="{{ file.filepath }}" class="preview" controls>
+                                    <source type="audio/mpeg" alt="preview-mp3">
+                                </audio>
+                            {% elseif file.extension == 'video/3gpp' or file.extension == 'video/mp4' %}
+                                <video width="220" height="140" class="preview" controls>
+                                    <source src="{{ file.filepath }}" type="video/mp4">
+                                </video>
+                            {% elseif file.extension == 'application/zip' or file.extension == 'application/x-rar-compressed' %}
+                                <img src="assets/img/icon-archive.png" class="preview" alt="preview-pdf">
+                            {% endif %}
+
+
+
+                            <span class="filename">{{ file.filename }}</span>
+                            <div class="actions file-actions">
+
+                                <img src="assets/img/edit.png" title="Renommer" class="icon-rename-file" alt="icon-to-rename">
+
+                                <img src="assets/img/exchange.png" title="Remplacer" class="icon-replace-file" alt="icon-to-replace">
+                                <img src="assets/img/move-file.png" title="Déplacer" class="icon-move-file" alt="icon-to-move">
+                                <a href="{{ file.filepath }}" download="{{ file.filename }}">
+                                    <img src="assets/img/download.png" alt="icon-to-download">
+                                </a>
+
+                                {% if txt is not empty %}
+                                    <img src="assets/img/text.png" class="icon-edit-txt" alt="icon-to-rename">
+                                {% endif %}
+                                <form method="POST" action="?action=deleteFile">
+                                    <input type="hidden" name="file_id" value="{{ file.id }}">
+                                    <input type="image" src="assets/img/remove.png" class="icon-delete" alt="icon-to-delete">
+                                </form>
+                            </div>
+                            <div class="container-forms">
+                                <form method="POST" action="?action=renameFile">
+                                    <input type="hidden" name="file_id" value="{{ file.id }}">
+                                    <input type="text" name="newname" placeholder="Nouveau nom">
+                                    <button type="submit">Renommer</button>
+                                </form>
+                                <form method="POST" action="?action=replaceFile" enctype="multipart/form-data">
+                                    <input type="hidden" name="file_id" value="{{ file.id }}">
+                                    <input type="hidden" name="MAX_FILE_SIZE" value="100000000">
+                                    <input type="file" name="userfile">
+                                    <button type="submit">Remplacer</button>
+                                </form>
+                                <form method="POST" action="?action=moveFile">
+                                    <input type="hidden" name="file_id" value="{{ file.id }}">
+                                    <select name="folder_id">
+                                        <option value="NULL">Sélectionnez un dossier</option>
+                                        {% for folder in folders %}
+                                            <option value="{{ folder.id }}">{{ folder.foldername }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <button type="submit">Déplacer</button>
+                                </form>
+                                {% if txt is not empty %}
+                                    <div class="container-modify-field container-hidden none modal">
+                                        <div class="modal-content">
+                                            <span class="close">&times;</span>
+                                            <form method="POST" action="?action=modifyFile" id="form-modify">
+                                                <input type="hidden" name="file_id" value="{{ file.id }}" class="input-hidden">
+                                                <textarea name="content-modification" placeholder="Ajouter du texte">
+                                            {% set path = file.filepath %}
+                                                    {{ contentFiles[path] }}
+                                        </textarea>
+                                                <input type="submit" id="{{ file.filepath ~ 'modifyFile' }}" value="Modifier">
+                                            </form>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+            {% endif %}
+
             </div>
         </div>
 

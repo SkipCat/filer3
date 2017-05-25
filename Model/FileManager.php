@@ -24,6 +24,14 @@ class FileManager {
         $data = $this->DBManager->findOne("SELECT * FROM files WHERE id = " . $id);
         return $data;
     }
+    public function getFileByIdFolder($id_folder) {
+        $data = $this->DBManager->findAllSecure("SELECT * FROM files WHERE id_folder = :id_folder",
+            [
+                'id_folder' => $id_folder,
+            ]
+        );
+        return $data;
+    }
 
     public function getFileByUrl($filepath) {
         $data = $this->DBManager->findOneSecure("SELECT * FROM files WHERE filepath = :filepath",

@@ -35,6 +35,7 @@ class FolderManager {
         return $data;
     }
 
+
     public function getFolderById($id) {
         $data = $this->DBManager->findOneSecure("SELECT * FROM folders WHERE id = :id", 
             ['id' => $id]);

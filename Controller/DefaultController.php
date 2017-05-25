@@ -36,15 +36,4 @@ class DefaultController extends BaseController {
         }
     }
 
-    public function profileAction() {
-        if (!empty($_SESSION['user_id'])) {
-            $userManager = UserManager::getInstance();
-            $user = $userManager->getUserById($_SESSION['id']);
-            echo $this->renderView('profile.html.twig', ['user' => $user]);
-        }
-        else {
-            echo $this->redirect('login');
-        }
-    }
-
 }
