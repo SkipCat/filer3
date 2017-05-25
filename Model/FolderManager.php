@@ -149,23 +149,54 @@ class FolderManager {
         }
     }
 
+    public function folderCheckMove($data) {
+        $result['isFormGood'] = true;
+
+        if ($data['folder_parent_id'] == NULL) { // empty field
+            $result['isFormGood'] = false;
+            $result['errors'] = 'Veuillez saisir un dossier';
+        }
+        else {
+            $folder = $this->getFolderById($data['folder_id']);
+            $folderParent = $this->DBManager->findOneSecure("SELECT * FROM folders WHERE id = :id",
+                ['id' => $data['folder_parent_id']]);
+            $newpath = $folderParent['folderpath'] . '/' . $data['folder_id'];
+
+            // check if newpath already exists
+            $folderExist = $this->getFolderByUrl($newpath);
+            if ($folderExist) {
+                $result['isFormGood'] = false;
+                $result['errors'] = 'Le dossier existe déjà dans le dossier que vous avez sélectionné';
+            }
+            else {
+                $result['folder_parent_id'] = $data['folder_parent_id'];
+                $result['folder_id'] = $data['folder_id'];    
+            }
+        }
+        return $result;
+    }
+
     public function moveFolder($data) {
         $folder = $this->getFolderById($data['folder_id']);
-        $this->moveFolderRecursive($data['folder_id'], $folder['folder_parent_id']);
+        $this->moveFolderRecursive($data['folder_id'], $data['folder_parent_id']);
     }
 
     public function moveFolderRecursive($folderId, $parentId) {
         // get folder to move and future parent
-        $dir = $this->getFolderById($folderId);
+        $dir = $this->getFolderById($parentId);
         $dirpath = $dir['folderpath'];
         $newParent = $this->getFolderById($parentId); // get future parent
+        $parentPath = $newParent['folderpath'];
 
         // move folder
-        $newpath = $dirpath . '/' . $folderId;
+        $newpath = $parentPath . '/' . $folderId;
         $this->DBManager->findOneSecure("UPDATE folders
             SET id_folder = :parent_id, folderpath = :newpath
-            WHERE id = :id", ['parent_id' => $parentId, 'newpath' => $newpath]
-        );
+            WHERE id = :id", [
+                'parent_id' => $parentId,
+                'newpath' => $newpath,
+                'id' => $folderId
+        ]);
         rename($dirpath, $newpath); // move folder in local
 
         // then move files and folders inside
@@ -175,9 +206,9 @@ class FolderManager {
                 if ($object != '.' && $object != '..') {
                     $path = $dirpath . '/' . $object;
                     if (filetype($path) == 'dir') { // or is_dir()
-                        $folderId = basename($path);
-                        $folderParentId = basename($dirpath);
-                        $this->moveFolderRecursive($folderId, $folderParentId); // recursivity
+                        $dirId = basename($path);
+                        $dirParentId = basename($dirpath);
+                        $this->moveFolderRecursive($dirId, $dirParentId); // recursivity
                     }
                     else {
                         $fileManager = FileManager::getInstance();
@@ -191,7 +222,7 @@ class FolderManager {
                     }
                 }
             }
-            reset($objects); // set internal pointer of array 'objects' to its first element
+            reset($objects); // set internal pointer of array 'objects' to its first element            
         }
     }
 

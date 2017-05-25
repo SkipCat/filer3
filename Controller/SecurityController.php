@@ -11,7 +11,7 @@ class SecurityController extends BaseController {
         $logManager = LogManager::getInstance();
         $logManager->writeLogUser('access.log', 'User logged out.');
         session_destroy();
-        echo $this->redirect('home');
+        echo $this->redirect('login');
     }
 
     public function registerAction() {
@@ -29,12 +29,12 @@ class SecurityController extends BaseController {
                 }
                 else {
                     $errors = $result['errors'];
-                    $logManager->writeLogUser('security.log', 'Error register: invalid form.');                    
+                    $logManager->writeLog('security.log', 'Error register: invalid form.');                    
                     echo $this->renderView('register.html.twig', ['errors' => $errors]);
                 }
             }
             else {
-                $logManager->writeLogUser('security.log', 'Error register: method not POST.');                
+                $logManager->writeLog('security.log', 'Error register: method not POST.');                
                 echo $this->renderView('register.html.twig', ['errors' => $errors]);                
             }
         }
@@ -58,12 +58,12 @@ class SecurityController extends BaseController {
                 }
                 else {
                     $errors = "Pseudo ou mot de passe incorrect";
-                    $logManager->writeLogUser('security.log', 'Error login: invalid form.');                    
+                    $logManager->writeLog('security.log', 'Error login: invalid form.');                    
                     echo $this->renderView('login.html.twig', ['errors' => $errors]);
                 }
             }
             else {
-                $logManager->writeLogUser('security.log', 'Error login: method not POST.');
+                $logManager->writeLog('security.log', 'Error login: method not POST.');
                 echo $this->renderView('login.html.twig', ['errors' => $errors]);  
             }
         }

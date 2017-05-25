@@ -19,9 +19,9 @@ class FileManager {
         $this->DBManager = DBManager::getInstance();
     }
 
-    public function getFileById($d) {
-        $id = (int)$d;
-        $data = $this->DBManager->findOne("SELECT * FROM files WHERE id =:id", ['id' => $id]);
+    public function getFileById($id) {
+        $id = (int)$id;
+        $data = $this->DBManager->findOne("SELECT * FROM files WHERE id = " . $id);
         return $data;
     }
 
@@ -192,6 +192,7 @@ class FileManager {
             $file = $this->getFileById($data['file_id']);
             $folder = $this->DBManager->findOneSecure("SELECT * FROM folders WHERE id = :id",
                 ['id' => $data['folder_id']]);
+            $newpath = $folder['folderpath'] . '/' . $data['file_id']; 
 
             // check if newname already exists
             $fileExist = $this->getFileByUrl($newpath);
@@ -202,7 +203,7 @@ class FileManager {
             else {
                 $result['filepath'] = $file['filepath'];
                 $result['id_folder'] = $data['folder_id'];
-                $result['newpath'] = $folder['folderpath'] . '/' . $data['file_id'];                
+                $result['newpath'] = $newpath;                
             }
         }
         return $result;
@@ -221,7 +222,7 @@ class FileManager {
     }
 
     public function modifyFile($data) {
-        $file = $this->getFileById((int)$data['file_id']);
+        $file = $this->DBManager->getFileById($data['file_id']);
         return file_put_contents($file['filepath'], $data['content-modification']);
     }
 

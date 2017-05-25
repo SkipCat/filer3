@@ -88,7 +88,36 @@ class FolderController extends BaseController {
         }
     }
 
-    public function foldersAction() {
+    public function moveFolderAction() {
+        $logManager = LogManager::getInstance();
+        $folderManager = FolderManager::getInstance();
+
+        if (!empty($_SESSION['user_id'])) {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $data = $folderManager->folderCheckMove($_POST);
+                if ($data['isFormGood']) {
+                    $folderManager->moveFolder($data);
+                    $logManager->writeLogUser('access.log', 'User moved folder.'); 
+                    //echo $this->redirect('home');
+                }
+                else {
+                    $errors = $data['errors'];
+                    $logManager->writeLogUser('security.log', 'Error move folder: invalid form.');
+                    echo $this->renderView('home.html.twig', ['errors' => $errors]);
+                }
+            }
+            else {
+                $logManager->writeLogUser('security.log', 'Error move folder: method not post.');
+                echo $this->redirect('home');
+            }
+        }
+        else {
+            $logManager->writeLogUser('security.log', 'Error move file: user not connected.');  
+            echo $this->redirect('login');
+        }
+    }
+
+    public function seeFolderAction() {
         $userManager = UserManager::getInstance();
         $fileManager = FileManager::getInstance();
         $folderManager = FolderManager::getInstance();
@@ -98,6 +127,7 @@ class FolderController extends BaseController {
             $user = $userManager->getUserById($_SESSION['user_id']);
             $files = $fileManager->getUserFiles();
             $folders = $folderManager->getUserFolders($_SESSION['user_id']);
+
             $id_folder = (int)$_GET['id'];
             $foldersById = $fileManager->getFilesByIdFolder($id_folder);
 

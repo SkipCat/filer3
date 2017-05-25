@@ -156,6 +156,7 @@ class FileController extends BaseController {
     public function modifyFileAction() {
         $fileManager = FileManager::getInstance();
         $logManager = LogManager::getInstance();
+
         if (!empty($_SESSION['user_id'])) {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $fileManager->modifyFile($_POST);

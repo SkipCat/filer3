@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  127.0.0.1
--- Généré le :  Mar 23 Mai 2017 à 19:45
+-- Généré le :  Jeu 25 Mai 2017 à 22:49
 -- Version du serveur :  5.7.14
 -- Version de PHP :  7.0.10
 
@@ -35,13 +35,6 @@ CREATE TABLE `files` (
   `filepath` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `date` varchar(255) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Contenu de la table `files`
---
-
-INSERT INTO `files` (`id`, `id_user`, `id_folder`, `filename`, `extension`, `filepath`, `date`) VALUES
-(4, 19, NULL, 'hkjhjk', 'image/jpeg', 'uploads/skipcat/hkjhjk', '2017-05-23 21:34:24');
 
 -- --------------------------------------------------------
 
@@ -77,7 +70,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `date`) VALUES
-(19, 'skipcat', 'cecile.huguet@supinternet.fr', '$2y$10$a7rDPIHu9vWt4Jr6jXxnTevg9TATyQxj0QjNvdifHxebXIWrcTYNu', '2017-05-23');
+(22, 'Test1234', 'test@supinternet.fr', '$2y$10$bKlZArbTf9vtwAZWX8iqH.feUtawXUNCsDozCVTNaLkKgAf.oGNrG', '2017-05-25 22:12:21');
 
 --
 -- Index pour les tables exportées
@@ -88,18 +81,13 @@ INSERT INTO `users` (`id`, `username`, `email`, `password`, `date`) VALUES
 --
 ALTER TABLE `files`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `[filename]` (`filename`),
-  ADD UNIQUE KEY `[filepath]` (`filepath`),
-  ADD KEY `id_users` (`id_user`),
-  ADD KEY `extension` (`extension`);
+  ADD KEY `id_users` (`id_user`);
 
 --
 -- Index pour la table `folders`
 --
 ALTER TABLE `folders`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `foldername` (`foldername`),
-  ADD UNIQUE KEY `folderpath` (`folderpath`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Index pour la table `users`
@@ -107,7 +95,6 @@ ALTER TABLE `folders`
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `[email]` (`email`),
-  ADD UNIQUE KEY `[password]` (`password`),
   ADD UNIQUE KEY `[firstname]` (`username`);
 
 --
@@ -118,17 +105,17 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT pour la table `files`
 --
 ALTER TABLE `files`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=123;
 --
 -- AUTO_INCREMENT pour la table `folders`
 --
 ALTER TABLE `folders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 --
 -- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
