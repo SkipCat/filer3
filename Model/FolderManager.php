@@ -183,7 +183,6 @@ class FolderManager {
                     else {
                         $fileManager = FileManager::getInstance();
                         $file = $fileManager->getFileByUrl($path);
-                        var_dump($file);
                         $currentFolder = $this->getFolderById($file['id_folder']);
 
                         $data['filepath'] = $file['filepath'];
