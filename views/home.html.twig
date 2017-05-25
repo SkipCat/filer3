@@ -65,12 +65,10 @@
                     <span class="filename">{{ file.filename }}</span>
                     <div class="actions file-actions">
 
-                        <img src="assets/img/edit.png" title="renommer" class="icon-rename-file" alt="icon-to-rename">
+                        <img src="assets/img/edit.png" title="Renommer" class="icon-rename-file" alt="icon-to-rename">
 
-                        <img src="assets/img/exchange.png" title="remplacer" class="icon-replace-file" alt="icon-to-replace">
-                        <a href="?action=moveFile">
-                            <img src="assets/img/move-file.png" class="icon-move" alt="icon-to-move">
-                        </a>
+                        <img src="assets/img/exchange.png" title="Remplacer" class="icon-replace-file" alt="icon-to-replace">
+                        <img src="assets/img/move-file.png" title="Déplacer" class="icon-move-file" alt="icon-to-move">
                         <a href="{{ file.filepath }}" download="{{ file.filename }}">
                             <img src="assets/img/download.png" alt="icon-to-download">
                         </a>
@@ -93,7 +91,7 @@
                             <input type="hidden" name="file_id" value="{{ file.id }}">
                             <input type="hidden" name="MAX_FILE_SIZE" value="100000000">                            
                             <input type="file" name="userfile">
-                            <input type="submit" value="Remplacer">
+                            <button type="submit">Remplacer</button>
                         </form>
                         <form method="POST" action="?action=moveFile">
                             <input type="hidden" name="file_id" value="{{ file.id }}">
@@ -103,7 +101,7 @@
                                     <option value="{{ folder.id }}">{{ folder.foldername }}</option>
                                 {% endfor %}
                             </select>
-                            <input type="submit" value="Déplacer">
+                            <button type="submit">Déplacer</button>
                         </form>
                         <!--
                             <form method="POST" action="?action=deleteFile">

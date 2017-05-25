@@ -143,6 +143,9 @@ aside {
         .home-page #files-box #all-files .file .container-forms button:hover {
           background: #2EBC99;
           border: 1px solid #2EBC99; }
+      .home-page #files-box #all-files .file .container-forms select {
+        width: 100%;
+        background: #f6f7f9; }
 
 .log-page {
   width: 50%;

@@ -28,4 +28,11 @@ window.onload = function() {
             this.parentNode.parentNode.childNodes[7].childNodes[3].style.display = 'block';
         };
     }
+    var icon_move_file = document.querySelectorAll(".icon-move-file");
+    for (var i = 0; i < icon_move_file.length; i++){
+        icon_move_file[i].onclick = function () {
+            console.log(this.parentNode.parentNode.childNodes[7].childNodes[5]);
+            this.parentNode.parentNode.childNodes[7].childNodes[5].style.display = 'block';
+        };
+    }
 }
