@@ -17,9 +17,10 @@
                             <img src="assets/img/icon_download.png" alt="icon-to-download">
                         </a>
                         -->
-                        <a href="?action=deleteFolder">
-                            <img src="assets/img/icon_delete.png" class="icon-delete" alt="icon-to-delete">
-                        </a>
+                        <form method="POST" action="?action=deleteFolder">
+                            <input type="hidden" name="folder_id" value="{{ folder.id }}">
+                            <input type="image" src="assets/img/remove.png" class="icon-delete" alt="icon-to-delete">
+                        </form>
                     </div>
                     <div class="container-forms">
                         <form method="POST" action="?action=renameFolder">

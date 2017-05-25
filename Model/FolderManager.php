@@ -122,17 +122,10 @@ class FolderManager {
 
     public function deleteFolder($data) {
         $folder = $this->getFolderById($data['folder_id']);
-        //unlink($folder['folderpath']);
         $this->deleteFolderRecursive($folder['folderpath'], $data['folder_id']);
-        
-        /*
-        $data = $this->DBManager->findOneSecure("DELETE FROM folders WHERE id = :id",
-            ['id' => $data['folder_id']]);
-        return $data;
-        */
     }
 
-    function deleteFolderRecursive($dirpath, $dirid) {
+    public function deleteFolderRecursive($dirpath, $dir_id) {
         if (is_dir($dirpath)) {
             $objects = scandir($dirpath);
             foreach ($objects as $object) {
@@ -142,17 +135,42 @@ class FolderManager {
                     }
                     else {
                         $fileManager = FileManager::getInstance();
-                        $fileManager->deleteFile($object);
-                        unlink($dirpath . '/' . $object);
+                        $file = $fileManager->getFileByUrl($dirpath . '/' . $object);
+                        var_dump($file);
+                        $fileManager->deleteFile($file['id']);
                     }
                 }
             }
             reset($objects); // set internal pointer of array 'objects' to its first element
             rmdir($dirpath); // delete folder in local
             $this->DBManager->findOneSecure("DELETE FROM folders WHERE id = :id",
-                ['id' => $dirid]); // delete folder in db
+                ['id' => $dir_id]); // delete folder in db
         }
     }
+
+    public function moveFolder($data) {
+        // get folder to move informations
+        $folder = $this->getFolderById($data['folder_id']);
+        $foldername = $folder['foldername'];
+        $folderpath = $folder['folderpath'];
+
+        // get future parent folder informations
+        $newParentFolder = $this->getFolderById($data['folder_parent_id']);
+        foreach ($newParentFolder as $value) {
+            $dirpath = $value['folderpath'];
+            $dir_id = $value['id'];
+        }
+
+        // move folder
+        $newpath = $dirpath . '/' . basename($folderpath);
+        move_folder($dir_id, $foldername, $newpath); // 'move' folder in db (modify path)
+        rename($folderpath, $newpath); // move folder in local
+
+        // move files and folders inside
+
+    }
+
+
 
 
 }
