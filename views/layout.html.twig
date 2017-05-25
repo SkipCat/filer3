@@ -11,17 +11,17 @@
     <body>
         <header>
             {% if user is defined and not empty %}
-                <a href="?action=profile">{{ user.username }}</a>
+                <a href="?action=profile" class="user-connect">{{ user.username }}</a>
             {% else %}
-                <a href="?action=login">Connexion</a>
+                <a href="?action=login" class="user-connect">Connexion</a>
             {% endif %}
-            <a href="action=home">
+            <a href="?action=home">
                 <h3>Filer 3</h3>
             </a>
             {% if user is defined and not empty %}
-                <a href="?action=logout">Déconnexion</a>
+                <a href="?action=logout"><img src="assets/img/logout.png" alt="icon-logout"></a>
             {% else %}
-                <a href="?action=register">Inscription</a>
+                <a href="?action=register" class="register">Inscription</a>
             {% endif %}
         </header>
 
@@ -29,10 +29,11 @@
             <aside>
                 <div>
                     <h3>Ajouter un fichier</h3>
+                    <label for="file" class="label-file">Choisir un fichier&nbsp;<img src="assets/img/upload_file.png" alt="icon-upload-file"></label>
                     <form method="POST" action="?action=uploadFile" enctype="multipart/form-data">
                         <input type="hidden" name="MAX_FILE_SIZE" value="100000000"> <!-- 100Mo here, 100M in file php.ini -->
-                        <input type="file" name="userfile">
-                        <input type="submit" value="Ajouter">
+                        <input type="file" id="file" class="input-file" name="userfile">
+                        <input type="submit" id="input-upload-file" value="Ajouter">
                     </form>
                 </div>
                 <div>

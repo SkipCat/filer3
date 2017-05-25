@@ -6,8 +6,9 @@
 
 body {
     margin: 0;
+    padding: 0;
     min-height: 100vh;
-    min-width: 100vw;
+    min-width: 99vw;
     display: flex;
     flex-direction: column;
 
@@ -21,31 +22,199 @@ main {
     background-color: hsla(0,0%,100%,.8);
     display: flex;
 }
-
-aside {
-    background-color: lightgrey;
-    @include flex(column, center, space-around);
-    width: 225px;
-}
-
-section {
-
-}
-
 header {
-    background-color: rgba(40,43,48,.75);
-    @include flex(row, center, space-around);
-    
+    background-color: #2EBC99;
+    @include flex(row, center, space-between);
+
     a {
-        color: white;
+        padding: 0px 20px;
+        white-space: nowrap;
+        &:hover {
+            color: $red;
+        }
     }
     h3 {
-        color: crimson;
+        color : white;
+    }
+    .user-connect{
+        background: $orange;
+        padding: 21px 20px;
+        color : white;
+        font-weight: bold;
+        &:hover {
+            color: #E8F5FD;
+        }
+    }
+    .register{
+        color: white;
+        font-weight: bold;
+        &:hover {
+            color: #E8F5FD;
+        }
     }
 }
 
+aside {
+    background-color: #f6f7f9;
+    width: 300px;
+    div{
+        width: 100%;
+        padding: 10%;
+        .label-file {
+            cursor: pointer;
+            color: $orange;
+        }
+        .label-file:hover {
+            color: $red;
+        }
+        .input-file {
+            display: none;
+        }
+        h3{
+            color: $red;
+        }
+        input[type="text"]{
+
+            -webkit-transition: all 0.30s ease-in-out;
+            -moz-transition: all 0.30s ease-in-out;
+            -ms-transition: all 0.30s ease-in-out;
+            -o-transition: all 0.30s ease-in-out;
+            outline: none;
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            width: 80%;
+            background: #fff;
+            margin-bottom: 4%;
+            border: 1px solid #ccc;
+            padding: 3%;
+            color: #555;
+            font: 95% Arial, Helvetica, sans-serif;
+            &:focus{
+                box-shadow: 0 0 5px #43D1AF;
+                padding: 3%;
+                border: 1px solid #43D1AF;
+            }
+        }
+        input[type="submit"]{
+            width: 80%;
+            padding: 3%;
+            margin-top: 3%;
+            background: #43D1AF;
+            border-bottom: 2px solid #30C29E;
+            border-top-style: none;
+            border-right-style: none;
+            border-left-style: none;
+            color: #fff;
+            &:hover{
+                background: #2EBC99;
+            }
+        }
+    }
+
+}
+
+.home-page {
+    background: #FFFFFF;
+    width: 100%;
+    #folders-box{
+        border: 1px solid black;
+    }
+    #files-box{
+        #all-files{
+            @include flex(row, flex-end, space-around);
+            flex-wrap: wrap;
+            align-content: stretch;
+            .file{
+                width: 20%;
+                border: 1px solid white;
+                text-align: center;
+                .preview{
+                    width: 90%;
+                    max-height: 150px;
+                    flex-direction : column;
+                    text-align: center;
+                    margin: 5px;
+                    vertical-align: top;
+                }
+                .filename{
+                    color: #6B6B6B;
+                    margin: 10px;
+                    font-size: 1em;
+                }
+                .file-actions{
+                    padding: 10px;
+
+                    img{
+                        padding: 3px;
+                    }
+                }
+
+            }
+        }
+    }
+
+}
+.log-page{
+
+    width: 50%;
+    margin: auto;
+
+    .form {
+        position: relative;
+        z-index: 1;
+        background: #FFFFFF;
+        max-width: 360px;
+        margin: 0 auto 100px;
+        padding: 45px;
+        text-align: center;
+        box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    }
+    .form input {
+        outline: 0;
+        background: #f2f2f2;
+        width: 100%;
+        border: 0;
+        margin: 0 0 15px;
+        padding: 15px;
+        box-sizing: border-box;
+        font-size: 14px;
+    }
+    .form button {
+        text-transform: uppercase;
+        outline: 0;
+        background: #43D1AF;
+        width: 100%;
+        border: 0;
+        padding: 15px;
+        color: #FFFFFF;
+        font-size: 14px;
+        cursor: pointer;
+        &:hover{
+            background: #2EBC99;
+            border: 1px solid #2EBC99;
+        }
+    }
+    .form .message {
+        margin: 15px 0 0;
+        color: #b3b3b3;
+        font-size: 12px;
+    }
+    .form .message a {
+        color: #4CAF50;
+        text-decoration: none;
+    }
+    .error-message{
+        color: crimson;
+        font-size: 0.8em;
+    }
+}
+
+
+
 footer {
-    background-color: rgba(40,43,48,.75);
+    background-color: #f6f7f9;
     @include flex(row, center, center);
-    color: crimson;
+    color: #43D1AF;
+    min-height: 50px;
 }

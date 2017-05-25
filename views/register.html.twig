@@ -1,21 +1,24 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
-    {% if errors is not empty %}
-        {% for error in errors %}
-            {{ error | raw }}
-            <br>
-        {% endfor %}
-    {% endif %}
+
+    <div class="log-page">
+        <div class="form">
+            {% if errors is not empty %}
+                {% for error in errors %}
+                    <p class="error-message">{{ error | raw }}</p>
+                {% endfor %}
+            {% endif %}
+            <form method="POST" action="?action=register" class="login-form">
+                <input id="username" type="text" name="username" placeholder="Pseudo*">
+                <input type="email" name="email" placeholder="Email*">
+                <input id="password" type="password" name="password" placeholder="Mot de Passe*">
+                <input id="verifpassword" type="password" name="verifpassword" placeholder="Confirmation Mot de Passe*">
+                <button type="submit" name="submitRegister" id="button">Créer mon compte</button>
+            </form>
+        </div>
+    </div>
     <section>
-        <form method="POST" action="?action=register">
-            <input id="username" type="text" name="username" placeholder="Pseudo*">
-            <input type="email" name="email" placeholder="Email*">
-            <input id="password" type="password" name="password" placeholder="Mot de Passe*">
-            <input id="verifpassword" type="password" name="verifpassword" placeholder="Confirmation Mot de Passe*">
-            <!--<input id="firstname" type="text" name="firstname" placeholder="Prénom*">
-            <input id="lastname" type="text" name="lastname" placeholder="Nom*">-->
-            <button type="submit" name="submitRegister" id="button">Créer mon compte</button>
-        </form>
+
     </section>
 {% endblock %}
