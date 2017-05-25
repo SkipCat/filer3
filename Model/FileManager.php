@@ -21,7 +21,7 @@ class FileManager {
 
     public function getFileById($d) {
         $id = (int)$d;
-        $data = $this->DBManager->findOne("SELECT * FROM files WHERE id =:id", ['id' => $id]);
+        $data = $this->DBManager->findOneSecure("SELECT * FROM files WHERE id =:id", ['id' => $id]);
         return $data;
     }
 
