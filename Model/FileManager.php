@@ -19,9 +19,9 @@ class FileManager {
         $this->DBManager = DBManager::getInstance();
     }
 
-    public function getFileById($id) {
-        $id = (int)$id;
-        $data = $this->DBManager->findOne("SELECT * FROM files WHERE id = " . $id);
+    public function getFileById($d) {
+        $id = (int)$d;
+        $data = $this->DBManager->findOne("SELECT * FROM files WHERE id =:id", ['id' => $id]);
         return $data;
     }
 
@@ -221,7 +221,7 @@ class FileManager {
     }
 
     public function modifyFile($data) {
-        $file = $this->DBManager->getFileById($data['file_id']);
+        $file = $this->getFileById((int)$data['file_id']);
         return file_put_contents($file['filepath'], $data['content-modification']);
     }
 

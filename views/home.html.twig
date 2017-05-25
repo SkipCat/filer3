@@ -123,7 +123,7 @@
                                 <button type="submit">Déplacer</button>
                             </form>
                             {% if txt is not empty %}
-                                <div class="container-modify-field container-hidden none modal">
+                                <div class="modal">
                                     <div class="modal-content">
                                         <span class="close">&times;</span>
                                         <form method="POST" action="?action=modifyFile" id="form-modify">
@@ -210,15 +210,15 @@
                                     <button type="submit">Déplacer</button>
                                 </form>
                                 {% if txt is not empty %}
-                                    <div class="container-modify-field container-hidden none modal">
+                                    <div class="modal container-forms">
                                         <div class="modal-content">
-                                            <span class="close">&times;</span>
-                                            <form method="POST" action="?action=modifyFile" id="form-modify">
+                                            <span class="close"></span>
+                                            <form method="POST" action="?action=modifyFile">
                                                 <input type="hidden" name="file_id" value="{{ file.id }}" class="input-hidden">
                                                 <textarea name="content-modification" placeholder="Ajouter du texte">
                                             {% set path = file.filepath %}
                                                     {{ contentFiles[path] }}
-                                        </textarea>
+                                                </textarea>
                                                 <input type="submit" id="{{ file.filepath ~ 'modifyFile' }}" value="Modifier">
                                             </form>
                                         </div>

@@ -212,8 +212,8 @@ aside {
                         padding: 3px;
                     }
                 }
-                .container-forms{
-                    input{
+                .container-forms {
+                    input {
                         outline: 0;
                         background: #f2f2f2;
                         width: 100%;
@@ -223,7 +223,7 @@ aside {
                         box-sizing: border-box;
                         font-size: 12px;
                     }
-                    button{
+                    button {
                         text-transform: uppercase;
                         outline: 0;
                         background: #43D1AF;
@@ -233,17 +233,16 @@ aside {
                         color: #FFFFFF;
                         font-size: 12px;
                         cursor: pointer;
-                        &:hover{
+                        &:hover {
                             background: #2EBC99;
                             border: 1px solid #2EBC99;
                         }
                     }
-                    select{
+                    select {
                         width: 100%;
                         background: #f6f7f9;
                     }
                 }
-
             }
         }
     }
