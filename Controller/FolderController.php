@@ -79,7 +79,7 @@ class FolderController extends BaseController {
             }
             else {
                 $logManager->writeLogUser('security.log', 'Error delete folder: method not POST.');
-                //echo $this->renderView('home.html.twig', ['errors' => $errors]);
+                echo $this->renderView('home.html.twig', ['errors' => $errors]);
             }
         }
         else {
@@ -98,7 +98,7 @@ class FolderController extends BaseController {
                 if ($data['isFormGood']) {
                     $folderManager->moveFolder($data);
                     $logManager->writeLogUser('access.log', 'User moved folder.'); 
-                    //echo $this->redirect('home');
+                    echo $this->redirect('home');
                 }
                 else {
                     $errors = $data['errors'];
