@@ -24,18 +24,16 @@ class FileManager {
         $data = $this->DBManager->findOne("SELECT * FROM files WHERE id = " . $id);
         return $data;
     }
-    public function getFileByIdFolder($id_folder) {
-        $data = $this->DBManager->findAllSecure("SELECT * FROM files WHERE id_folder = :id_folder",
-            [
-                'id_folder' => $id_folder,
-            ]
-        );
-        return $data;
-    }
 
     public function getFileByUrl($filepath) {
         $data = $this->DBManager->findOneSecure("SELECT * FROM files WHERE filepath = :filepath",
             ['filepath' => $filepath]);
+        return $data;
+    }
+
+    public function getFilesByIdFolder($id_folder) {
+        $data = $this->DBManager->findAllSecure("SELECT * FROM files WHERE id_folder = :id_folder",
+            ['id_folder' => $id_folder]);
         return $data;
     }
 
@@ -56,35 +54,39 @@ class FileManager {
     ############################
 
     public function fileCheckAdd($data) {
-        $isFormGood = true;
-        $result = [];
+        $result['isFormGood'] = true;
 
         if (isset($_FILES['userfile']['name']) && !empty($_FILES) && $_FILES['userfile']['name'] !== "") {
-            $data['filename'] = $_FILES['userfile']['name'];
-            $data['file_tmp_name'] = $_FILES['userfile']['tmp_name'];
+            if (empty($data['newname'])) {
+                $filename = $_FILES['userfile']['name'];
+            }
+            else {
+                $filename = $data['newname'];
+            }
 
             // check if newname already exists
-            $fileExist = $this->getFileByName($data['filename']);
+            $fileExist = $this->getFileByName($filename);
             if ($fileExist) {
                 $result['isFormGood'] = false;
                 $result['errors'] = 'Le fichier existe déjà';
+            }
+            else {
+                $result['filename'] = $filename;
             }
         }
         else {
             $result['errors'] = 'Veuillez choisir un fichier';
             $isFormGood = false;
         }
-
-        $result['isFormGood'] = $isFormGood;
         return $result;
     }
 
-    public function uploadFile($data) {
+    public function uploadFile($data, $files) {
         $file['id_user'] = $_SESSION['user_id'];
         $file['id_folder'] = NULL;
-        $file['filename'] = $data['userfile']['name'];
-        $file['extension'] = $data['userfile']['type'];
-        $file['filepath'] = 'uploads/' . $_SESSION['user_name'] . '/' . $data['userfile']['name'];        
+        $file['filename'] = $data['filename'];
+        $file['extension'] = $files['userfile']['type'];
+        $file['filepath'] = 'uploads/' . $_SESSION['user_name'] . '/' . $file['filename'];        
         $file['date'] = $this->DBManager->getDatetimeNow();
 
         $this->DBManager->insert('files', $file);
@@ -94,7 +96,7 @@ class FileManager {
         $this->DBManager->findOneSecure("UPDATE files SET filepath = :newpath WHERE filepath = :filepath",
             ['filepath' => $file['filepath'], 'newpath' => $newpath]);
 
-        move_uploaded_file($data['userfile']['tmp_name'], $newpath);
+        move_uploaded_file($files['userfile']['tmp_name'], $newpath);
     }
 
     public function checkRenameFile($data) {
@@ -168,7 +170,7 @@ class FileManager {
     }
 
     public function replaceFile($post, $files) {
-        $this->deleteFile($post);
+        $this->deleteFile($post['file_id']);
         $this->uploadFile($files);
     }
 

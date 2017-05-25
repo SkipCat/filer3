@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="assets/css/style.css">
         <!-- <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script> -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-        <script src="assets/script/script.js"></script>
+        <script src="assets/js/script.js"></script>
     </head>
     <body>
         <header>
@@ -34,6 +34,7 @@
                     <form method="POST" action="?action=uploadFile" enctype="multipart/form-data">
                         <input type="hidden" name="MAX_FILE_SIZE" value="100000000"> <!-- 100Mo here, 100M in file php.ini -->
                         <input type="file" id="file" class="input-file" name="userfile">
+                        <input type="text" name="newname" placeholder="Renommer">
                         <input type="submit" id="input-upload-file" value="Ajouter">
                     </form>
                 </div>
